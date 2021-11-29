@@ -41,7 +41,6 @@
 
 #include <memory>
 #include <string>
-#include <nurse-bot/constants.hpp>
 #include <nurse-bot/task_action.hpp>
 
 namespace nursebot {
