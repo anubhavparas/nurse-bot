@@ -1,0 +1,3 @@
+<launch>
+    <test test-name="unit_tests" pkg="nurse_bot" type="nursebot_test" />
+</launch>

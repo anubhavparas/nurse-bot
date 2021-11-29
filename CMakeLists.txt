@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   tf
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,11 +55,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Task.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -75,10 +75,14 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   actionlib_msgs#   geometry_msgs#   move_base_msgs#   sensor_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  actionlib_msgs
+  geometry_msgs
+  move_base_msgs   
+  sensor_msgs   
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,9 +114,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
+ CATKIN_DEPENDS actionlib actionlib_msgs geometry_msgs move_base move_base_msgs roscpp rospy sensor_msgs std_msgs tf message_runtime
 #  LIBRARIES nurse-bot
-#  CATKIN_DEPENDS actionlib actionlib_msgs geometry_msgs move_base move_base_msgs roscpp rospy sensor_msgs std_msgs tf
 #  DEPENDS system_lib
 )
 
@@ -123,7 +127,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -140,7 +144,22 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/nurse-bot_node.cpp)
+add_executable(${PROJECT_NAME}_ui_node 
+              src/user_interface_node.cpp 
+              src/task_publisher.cpp
+              )
+target_link_libraries(${PROJECT_NAME}_ui_node ${catkin_LIBRARIES})
+add_dependencies(${PROJECT_NAME}_ui_node nurse_bot_generate_messages_cpp)
+
+add_executable(${PROJECT_NAME}_task_sub_node 
+              src/task_subscriber_node.cpp 
+              src/task_subscriber.cpp 
+              src/map_navigator.cpp
+              src/movebaseaction_wrapper.cpp
+              src/task_action.cpp
+              )
+target_link_libraries(${PROJECT_NAME}_task_sub_node ${catkin_LIBRARIES})
+add_dependencies(${PROJECT_NAME}_task_sub_node nurse_bot_generate_messages_cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -211,3 +230,49 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+# include_directories(/usr/include/gmock /usr/src/gmock)
+
+# find_library(GMOCK_LIBRARIES libgmock)
+#   if(NOT GMOCK_LIBRARIES)
+#     add_library(libgmock /usr/src/gmock/src/gmock-all.cc)
+#   endif()
+
+set(gmock_INCLUDE_DIR /usr/include/gmock)
+set(gmock_LIB_DIR /usr/lib)
+
+## Add gtest based cpp test target and link libraries
+if(CATKIN_ENABLE_TESTING)
+	find_package(rostest REQUIRED)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -pthread")
+	# add_rostest_gtest(talker_test test/publisher_test.test test/test_ros_publisher.cpp src/ros_publisher.cpp src/rostf_broadcaster.cpp)
+  # catkin_add_gtest(
+  #   nursebot_test 
+  #   test/main.cpp
+  #   test/test_map_navigator.cpp
+  #   test/test_task_action.cpp
+  #   test/test_movebaseaction_wrapper.cpp
+  #   test/test_task_publisher.cpp
+  #   src/map_navigator.cpp
+  #   src/movebaseaction_wrapper.cpp
+  #   src/task_action.cpp
+  #   src/task_publisher.cpp
+  #   # src/task_subscriber.cpp
+  #   )
+  add_rostest_gtest(
+    nursebot_test
+    test/nursebot_test.test
+    test/main.cpp
+    test/test_map_navigator.cpp
+    test/test_task_action.cpp
+    test/test_movebaseaction_wrapper.cpp
+    test/test_task_publisher.cpp
+    src/map_navigator.cpp
+    src/movebaseaction_wrapper.cpp
+    src/task_action.cpp
+    src/task_publisher.cpp
+    # src/task_subscriber.cpp
+    )
+  target_link_libraries(nursebot_test gmock ${catkin_LIBRARIES})
+  #add_dependencies(nursebot_test nursebot_test ${catkin_EXPORTED_TARGETS})
+endif()
