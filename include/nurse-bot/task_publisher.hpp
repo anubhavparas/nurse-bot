@@ -41,7 +41,6 @@
 #include <string>
 
 #include <memory>
-#include <nurse-bot/constants.hpp>
 
 namespace nursebot {
 class TaskPublisher {
