@@ -3,6 +3,8 @@
   <arg name="lost" default="false"/>
   <arg name="robot" default="steel"/>
   <arg name="world" default="simple_office_with_people"/>
+  <arg name="is_record_bag" default="false" />
+  <arg name="bagfile" default="recorded_topics.bag" />
 
   <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
     <arg name="lost" value="$(arg lost)"/>
@@ -12,5 +14,13 @@
 
   <include file="$(find nurse_bot)/launch/nursebot_tasksubscriber.launch"/>
   <include file="$(find nurse_bot)/launch/nursebot_ui_node.launch"/>
+
+   
+   <group ns="nursebot">
+    <node pkg="rosbag" type="record" name="rosbag_record" 
+          args="record -O $(arg bagfile) -a"
+          if="$(arg is_record_bag)"
+    />
+  </group>
   
 </launch>
