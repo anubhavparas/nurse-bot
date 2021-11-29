@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file task_publisher.hpp
+ * @file task_subscriber.hpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Defining the class to publish the task messages
+ * @brief Definitions of TaskSubscriber class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,45 +33,22 @@
  * 
  */
 
-#ifndef INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
-#define INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
-
+#include <nurse-bot/task_subscriber.hpp>
+#include <nurse-bot/movebaseaction_wrapper.hpp>
+#include <nurse-bot/map_navigator.hpp>
 #include <nurse_bot/Task.h>
-#include <ros/ros.h>
-#include <string>
 
-#include <memory>
-#include <nurse-bot/constants.hpp>
+nursebot::TaskSubscriber::TaskSubscriber()
+    : ros_node_h(std::make_shared<ros::NodeHandle>("~")) {
+  //  initialize the ROS subscriber object
+}
 
-namespace nursebot {
-class TaskPublisher {
- public:
-  /**
-   * @brief Construct a new TaskPublisher object
-   * 
-   */
-  TaskPublisher();
+nursebot::TaskSubscriber::~TaskSubscriber() {
+}
 
-  /**
-   * @brief Destroy the TaskPublisher object
-   * 
-   */
-  virtual ~TaskPublisher();
-
-  /**
-   * @brief method to publish the messages.
-   * 
-   * @param task_msg task message to be published
-   */
-  virtual void publish(const nurse_bot::Task& task_msg);
-
- private:
-  std::shared_ptr<ros::NodeHandle> ros_node_h;
-  ros::Publisher task_msg_pub;
-  nurse_bot::Task task_msg;
-  int buffer_rate = 10;
-  std::string task_topic = "/nursebot/task";
-};
-}  // namespace nursebot
-
-#endif  // INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
+void nursebot::TaskSubscriber::task_callback(
+            const nurse_bot::Task::ConstPtr& task_msg) {
+  ROS_WARN_STREAM("TaskSubscriber:: Received message");
+  //  process the message and pass that to the TaskAction class
+  this->task_msg_ptr = task_msg;
+}

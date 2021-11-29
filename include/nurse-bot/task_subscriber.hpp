@@ -63,6 +63,7 @@ class TaskSubscriber {
   std::shared_ptr<ros::NodeHandle> ros_node_h;
   ros::Subscriber task_msg_sub;
   int buffer_rate = 10;
+  nurse_bot::TaskConstPtr task_msg_ptr;
   std::string task_topic = "/nursebot/task";
   std::shared_ptr<nursebot::TaskAction> task_action;
 

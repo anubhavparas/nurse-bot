@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file task_publisher.hpp
+ * @file movebaseaction_wrapper.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Defining the class to publish the task messages
+ * @brief Definitions of MoveBaseActionWrapper class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,45 +33,21 @@
  * 
  */
 
-#ifndef INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
-#define INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
-
-#include <nurse_bot/Task.h>
-#include <ros/ros.h>
-#include <string>
+#include <nurse-bot/movebaseaction_wrapper.hpp>
 
 #include <memory>
-#include <nurse-bot/constants.hpp>
 
-namespace nursebot {
-class TaskPublisher {
- public:
-  /**
-   * @brief Construct a new TaskPublisher object
-   * 
-   */
-  TaskPublisher();
+nursebot::MoveBaseActionWrapper::MoveBaseActionWrapper(
+                                const std::string & name,
+                                bool spin_thread)
+    : mb_actionclient(std::make_shared<MoveBaseClient>(name, spin_thread)) {
+}
 
-  /**
-   * @brief Destroy the TaskPublisher object
-   * 
-   */
-  virtual ~TaskPublisher();
+nursebot::MoveBaseActionWrapper::~MoveBaseActionWrapper() {
+}
 
-  /**
-   * @brief method to publish the messages.
-   * 
-   * @param task_msg task message to be published
-   */
-  virtual void publish(const nurse_bot::Task& task_msg);
+bool nursebot::MoveBaseActionWrapper::sendgoal(const std::string& frame_id,
+                                               const nursebot::Pose& goal) {
+  return true;
+}
 
- private:
-  std::shared_ptr<ros::NodeHandle> ros_node_h;
-  ros::Publisher task_msg_pub;
-  nurse_bot::Task task_msg;
-  int buffer_rate = 10;
-  std::string task_topic = "/nursebot/task";
-};
-}  // namespace nursebot
-
-#endif  // INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_

@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file task_publisher.hpp
+ * @file map_navigator.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Defining the class to publish the task messages
+ * @brief Definitions of MapNavigator class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,45 +33,17 @@
  * 
  */
 
-#ifndef INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
-#define INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
+#include <nurse-bot/map_navigator.hpp>
 
-#include <nurse_bot/Task.h>
-#include <ros/ros.h>
-#include <string>
+nursebot::MapNavigator::MapNavigator(
+    const std::shared_ptr<nursebot::MoveBaseActionWrapper>& movebase_action)
+    : movebase_action(movebase_action) {
+}
 
-#include <memory>
-#include <nurse-bot/constants.hpp>
+nursebot::MapNavigator::~MapNavigator() {
+}
 
-namespace nursebot {
-class TaskPublisher {
- public:
-  /**
-   * @brief Construct a new TaskPublisher object
-   * 
-   */
-  TaskPublisher();
-
-  /**
-   * @brief Destroy the TaskPublisher object
-   * 
-   */
-  virtual ~TaskPublisher();
-
-  /**
-   * @brief method to publish the messages.
-   * 
-   * @param task_msg task message to be published
-   */
-  virtual void publish(const nurse_bot::Task& task_msg);
-
- private:
-  std::shared_ptr<ros::NodeHandle> ros_node_h;
-  ros::Publisher task_msg_pub;
-  nurse_bot::Task task_msg;
-  int buffer_rate = 10;
-  std::string task_topic = "/nursebot/task";
-};
-}  // namespace nursebot
-
-#endif  // INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_
+bool nursebot::MapNavigator::navigate(const nursebot::Pose& goal_pose) {
+  bool status = this->movebase_action->sendgoal(this->frame_id, goal_pose);
+  return status;
+}
