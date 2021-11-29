@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="robot" default="steel"/>
+  <arg name="lost" default="false"/>
+  <arg name="world" default="simple_office_with_people"/>
+
+  <group ns="nursebot">
+    <include file="$(find tiago_2dnav_gazebo)/launch/tiago_navigation.launch">
+      <arg name="public_sim" value="true"/>
+      <arg name="lost" value="$(arg lost)"/>
+      <arg name="robot" value="$(arg robot)"/>
+      <arg name="world" value="$(arg world)"/>
+    </include>
+  </group>
+  
+</launch>
