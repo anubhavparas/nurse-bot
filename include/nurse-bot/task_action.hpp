@@ -60,7 +60,7 @@ class GuidanceTask : public nursebot::TaskAction {
    * 
    * @param navigator object responsible for robot motion
    */
-  explicit GuidanceTask(const std::shared_ptr<Navigator>& navigator);
+  explicit GuidanceTask(const std::shared_ptr<nursebot::Navigator>& navigator);
 
   /**
    * @brief Destroy the GuidanceTask object
@@ -81,7 +81,7 @@ class GuidanceTask : public nursebot::TaskAction {
    * @brief pointer to navigator object responsible for moving the bot or its parts
    * 
    */
-  std::shared_ptr<Navigator> navigator;
+  std::shared_ptr<nursebot::Navigator> navigator;
 };
 
 class DeliveryTask : public nursebot::TaskAction {
@@ -91,7 +91,7 @@ class DeliveryTask : public nursebot::TaskAction {
    * 
    * @param navigator object responsible for robot motion
    */
-  explicit DeliveryTask(const std::shared_ptr<Navigator>& navigator);
+  explicit DeliveryTask(const std::shared_ptr<nursebot::Navigator>& navigator);
 
   /**
    * @brief Destroy the DeliveryTask object
@@ -112,7 +112,7 @@ class DeliveryTask : public nursebot::TaskAction {
    * @brief pointer to navigator object responsible for moving the bot or its parts
    * 
    */
-  std::shared_ptr<Navigator> navigator;
+  std::shared_ptr<nursebot::Navigator> navigator;
 };
 
 }  // namespace nursebot
