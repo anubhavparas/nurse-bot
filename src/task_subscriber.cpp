@@ -33,10 +33,11 @@
  * 
  */
 
+#include <nurse_bot/Task.h>
+
 #include <nurse-bot/task_subscriber.hpp>
 #include <nurse-bot/movebaseaction_wrapper.hpp>
 #include <nurse-bot/map_navigator.hpp>
-#include <nurse_bot/Task.h>
 
 nursebot::TaskSubscriber::TaskSubscriber()
     : ros_node_h(std::make_shared<ros::NodeHandle>("~")) {
