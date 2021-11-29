@@ -57,12 +57,13 @@ SOFTWARE.
 - ROS-based  modules  (mapping,  navigation,  planner  and control)  in  C++  for  a  robot  to  guide  people  and  deliver items in an indoor hospital environment.
 - Simulations of the modules in Gazebo and RViz.
 - Overview  of  proposed  work  including  timeline,  risks, mitigations and UML diagrams.
-- GitHub repository with README.•Continuous integration and code coverage with TravisCIand Coveralls.
+- GitHub repository with README.
+- Continuous integration and code coverage with TravisCIand Coveralls.
 - Memory leaks check and profiling using Valgrind.
 - Developer-level documentation.
 
 ## Potential Risks and Mitigation
-- In  case  the  fast  dynamic  obstacles  are  not  detected,  wewill  put  a  constraint  that  the  dynamic  obstacles  should be stationary.
+- In case the fast dynamic obstacles are  not  detected, we will  put a constraint that the dynamic  obstacles should be stationary.
 - In case the local path planner fails for dynamic obstacles,the robot will simple wait for the obstacle to disappear.
 
 ## Design
@@ -86,6 +87,9 @@ Refer the [sheet](https://docs.google.com/document/d/1zCVvXDaD1QKs-hEOy-ZBZ3aXe3
 
 ## Dependencies with licenses
 - OpenCV 4.5.0 (covered under the open-source Apache 2 License)
+- ROS Melodic
+- RViz, Gazebo 9.0
+- TIAGo++ ROS Package
 - Eigen 3.4 the Mozilla Public License 2.0
 - Boost 1.65 Boost software license
 - GMock BSD 3-Clause "New" or "Revised" License
@@ -94,14 +98,60 @@ Refer the [sheet](https://docs.google.com/document/d/1zCVvXDaD1QKs-hEOy-ZBZ3aXe3
 
 ## Standard install via command-line
 
-
 ### Install Dependencies
+- Make sure you have ROS Melodic installed in your computer. If not, refer to [site](http://wiki.ros.org/melodic/Installation/Ubuntu).
+
+#### Code Coverage
+```
+sudo apt-get install -y -qq lcov
+```
+#### Installing TIAGo package:
+- Create a workspace:
+    ```
+    mkdir ~/nursebot_ws
+    cd ~/nursebot_ws
+    ```
+- Copy the [tiago_dual_public.rosinstall](requirements/tiago_dual_public.rosinstall) file in ` ~/nursebot_ws`. Then run the following instruction in order to clone all the required repositories within the workspace:
+    ```
+    rosinstall src /opt/ros/melodic tiago_dual_public.rosinstall
+    ```
+
+- Set up rosdep
+    ```
+    rosdep update
+    ```
+- Then you may run the following instruction to make sure that all dependencies referenced in the workspace are installed:
+    ```
+    rosdep install --from-paths src --ignore-src -y --rosdistro melodic --skip-keys="opencv2 opencv2-nonfree pal_laser_filters speed_limit_node sensor_to_cloud hokuyo_node libdw-dev python-graphitesend-pip python-statsd pal_filters pal_vo_server pal_usb_utils pal_pcl pal_pcl_points_throttle_and_filter pal_karto pal_local_joint_control camera_calibration_files pal_startup_msgs pal-orbbec-openni2 dummy_actuators_manager pal_local_planner gravity_compensation_controller current_limit_controller dynamic_footprint dynamixel_cpp tf_lookup opencv3 joint_impedance_trajectory_controller cartesian_impedance_controller omni_base_description omni_drive_controller"
+    ```
+- Build the workspace:
+    ```
+    source /opt/ros/melodic/setup.bash
+    catkin_make -DCATKIN_ENABLE_TESTING=0
+    ```
+
+#### Cloning nurse-bot package:
+```
+cd ~/nursebot_ws/src
+git clone https://github.com/anubhavparas/nurse-bot.git
+cd ~/nursebot_ws/
+catkin_make
+source devel/setup.bash
+```
+
 
 ### Running the nurse-bot application
+- Copy and/or replace the [simple_office_with_people](configurations/simple_office_with_people) world folder in `~/.pal/tiago_maps/configurations/` folder. This folder contains the pre-build maps and their configs after gmapping. __Note__: Copy the exact folder with the same name with its content.
 
-This generates a index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
+- To run the demo, run the launch file:
+    ```
+    cd ~/nursebot_ws/
+    source devel/setup.bash
+    ```
+    ```
+    roslaunch nurse_bot nursebot_demo.launch
+    ```
 
-## Building for code coverage
 
 ## Run cppcheck and cpplint
 Run cppcheck: Results are stored in `./results/cppcheck_process.txt`, `./results/cppcheck_result.txt` 
@@ -126,3 +176,13 @@ doxygen doxygen.config
 ```
 
 The documents are generated in `./docs/doxygen` folder.
+
+
+<details>
+<summary><strong>Phase 1 Issues - Pending</strong></summary>
+
++ Try resolving travis build issues due to negative credits or look for alternatives/workarounds.
++ Integrating and testing code coverage for remote builds once travis is working. 
+
+</details>
+
