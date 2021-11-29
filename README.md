@@ -67,6 +67,11 @@ SOFTWARE.
 - In case the local path planner fails for dynamic obstacles,the robot will simple wait for the obstacle to disappear.
 
 ## Design
+The following are the current designs for the Nursebot ROS package: 
+
+![alt text](./UML/initial/UML_Class_Diagram_NurseBot.png?raw=true "NurseBot Class Diagram")
+
+Activity flow diagrams can be found [here](./UML/initial/).
 
 ## Development process
 Agile Development Process will be used in the development process with Test-Driven Development.
@@ -141,7 +146,7 @@ source devel/setup.bash
 
 
 ### Running the nurse-bot application
-- Copy and/or replace the [simple_office_with_people](configurations/simple_office_with_people) world folder in `~/.pal/tiago_maps/configurations/` folder. This folder contains the pre-build maps and their configs after gmapping. __Note__: Copy the exact folder with the same name with its content.
+- First copy and/or replace the [configurations/simple_office_with_people](configurations/simple_office_with_people) world folder in `~/.pal/tiago_maps/configurations/` folder. This folder contains the pre-build maps and their configs after gmapping. __Note__: Copy the exact folder with the same name with its content.
 
 - To run the demo, run the launch file:
     ```
@@ -177,6 +182,7 @@ doxygen doxygen.config
 
 The documents are generated in `./docs/doxygen` folder.
 
+## TODO
 
 <details>
 <summary><strong>Phase 1 Issues - Pending</strong></summary>
