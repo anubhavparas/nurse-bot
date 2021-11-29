@@ -40,7 +40,7 @@
 #include <nurse-bot/task_action.hpp>
 
 nursebot::GuidanceTask::GuidanceTask(
-    const std::shared_ptr<Navigator>& navigator)
+    const std::shared_ptr<nursebot::Navigator>& navigator)
     : navigator(navigator) {
 }
 
@@ -56,7 +56,7 @@ bool nursebot::GuidanceTask::perform_task(
 //////////////////////////////////////
 
 nursebot::DeliveryTask::DeliveryTask(
-    const std::shared_ptr<Navigator>& navigator)
+    const std::shared_ptr<nursebot::Navigator>& navigator)
     : navigator(navigator) {
 }
 
