@@ -53,3 +53,5 @@ CATKIN_IGNORE
 
 .settings.json
 .vscode/
+
+vendor/
