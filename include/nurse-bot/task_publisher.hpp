@@ -65,6 +65,15 @@ class TaskPublisher {
    */
   virtual void publish(const nurse_bot::Task& task_msg);
 
+  /**
+   * @brief Get the task_msg
+   * 
+   * @return nurse_bot::Task
+   */
+  nurse_bot::Task get_task_msg() {
+    return this->task_msg;
+  }
+
  private:
   std::shared_ptr<ros::NodeHandle> ros_node_h;
   ros::Publisher task_msg_pub;
@@ -72,6 +81,7 @@ class TaskPublisher {
   int buffer_rate = 10;
   std::string task_topic = "/nursebot/task";
 };
+
 }  // namespace nursebot
 
 #endif  // INCLUDE_NURSE_BOT_TASK_PUBLISHER_HPP_

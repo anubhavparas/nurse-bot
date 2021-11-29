@@ -59,6 +59,16 @@ class TaskSubscriber {
    */
   virtual ~TaskSubscriber();
 
+  /**
+   * @brief Get the task_msg_ptr
+   * 
+   * @return nurse_bot::TaskConstPtr 
+   */
+  nurse_bot::TaskConstPtr get_task_msg_ptr() {
+    return this->task_msg_ptr;
+  }
+
+
  private:
   std::shared_ptr<ros::NodeHandle> ros_node_h;
   ros::Subscriber task_msg_sub;
@@ -75,6 +85,7 @@ class TaskSubscriber {
    */
   void task_callback(const nurse_bot::Task::ConstPtr& task_msg);
 };
+
 }  // namespace nursebot
 
 #endif  // INCLUDE_NURSE_BOT_TASK_SUBSCRIBER_HPP_
