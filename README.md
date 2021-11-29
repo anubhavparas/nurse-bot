@@ -23,10 +23,9 @@ With this thought, we propose to ACME robotics our assistant robot, NurseBot, th
 - Service-triggered guidance : the robot would be be able to guide anyone from one part of the hospital to another,for example, patients from their room to radiology room,guiding new visitors from entry to their required location and back to exit, and guiding people in case of emergency.
 - Service-triggered delivery :  Carrying  medicines,  sup-plies, test samples, PPE kits, etc. from a pickup location to target location within the hospital.
 
+
 ![alt text](./docs/images/TIAGoBot.png?raw=true&style=centerme "NurseBot TIAGo")
-                           
-                           
-                                 NurseBot (TIAGo)
+
 
 ## Licence
 MIT License
