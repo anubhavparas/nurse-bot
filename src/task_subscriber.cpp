@@ -25,7 +25,7 @@
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Defining the class to subscribe to the task messages
+ * @brief Definitions of TaskSubscriber class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,48 +33,22 @@
  * 
  */
 
-#ifndef INCLUDE_NURSE_BOT_TASK_SUBSCRIBER_HPP_
-#define INCLUDE_NURSE_BOT_TASK_SUBSCRIBER_HPP_
-
+#include <nurse-bot/task_subscriber.hpp>
+#include <nurse-bot/movebaseaction_wrapper.hpp>
+#include <nurse-bot/map_navigator.hpp>
 #include <nurse_bot/Task.h>
-#include <ros/ros.h>
 
-#include <memory>
-#include <string>
-#include <nurse-bot/constants.hpp>
-#include <nurse-bot/task_action.hpp>
+nursebot::TaskSubscriber::TaskSubscriber()
+    : ros_node_h(std::make_shared<ros::NodeHandle>("~")) {
+  //  initialize the ROS subscriber object
+}
 
-namespace nursebot {
-class TaskSubscriber {
- public:
-  /**
-   * @brief Construct a new TaskSubscriber object
-   * 
-   */
-  TaskSubscriber();
+nursebot::TaskSubscriber::~TaskSubscriber() {
+}
 
-  /**
-   * @brief Destroy the TaskSubscriber object
-   * 
-   */
-  virtual ~TaskSubscriber();
-
- private:
-  std::shared_ptr<ros::NodeHandle> ros_node_h;
-  ros::Subscriber task_msg_sub;
-  int buffer_rate = 10;
-  nurse_bot::TaskConstPtr task_msg_ptr;
-  std::string task_topic = "/nursebot/task";
-  std::shared_ptr<nursebot::TaskAction> task_action;
-
-
-  /**
-   * @brief callback message for the subscriber
-   * 
-   * @param task_msg task message read from the topic
-   */
-  void task_callback(const nurse_bot::Task::ConstPtr& task_msg);
-};
-}  // namespace nursebot
-
-#endif  // INCLUDE_NURSE_BOT_TASK_SUBSCRIBER_HPP_
+void nursebot::TaskSubscriber::task_callback(
+            const nurse_bot::Task::ConstPtr& task_msg) {
+  ROS_WARN_STREAM("TaskSubscriber:: Received message");
+  //  process the message and pass that to the TaskAction class
+  this->task_msg_ptr = task_msg;
+}
