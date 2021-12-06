@@ -147,6 +147,7 @@ add_executable(${PROJECT_NAME}_ui_node
               src/user_interface_node.cpp 
               src/task_publisher.cpp
               src/task_action_client.cpp
+              src/user_interface.cpp
               )
 target_link_libraries(${PROJECT_NAME}_ui_node ${catkin_LIBRARIES})
 add_dependencies(${PROJECT_NAME}_ui_node nurse_bot_generate_messages_cpp)
