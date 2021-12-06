@@ -42,6 +42,12 @@
 nursebot::TaskSubscriber::TaskSubscriber()
     : ros_node_h(std::make_shared<ros::NodeHandle>("~")) {
   //  initialize the ROS subscriber object
+  this->task_msg_sub = this->ros_node_h->subscribe(
+                                    this->task_topic,
+                                    this->buffer_rate,
+                                    &TaskSubscriber::task_callback,
+                                    this);
+  ros::spin();
 }
 
 nursebot::TaskSubscriber::~TaskSubscriber() {
@@ -52,4 +58,16 @@ void nursebot::TaskSubscriber::task_callback(
   ROS_WARN_STREAM("TaskSubscriber:: Received message");
   //  process the message and pass that to the TaskAction class
   this->task_msg_ptr = task_msg;
+
+  if (this->task_ids.find(task_msg->task_id) != this->task_ids.end()) {
+    return;
+  }
+  this->task_ids.insert(task_msg->task_id);
+  std::shared_ptr<MoveBaseActionWrapper> movebase_action =
+                  std::make_shared<MoveBaseActionWrapper>("move_base", true);
+  std::shared_ptr<Navigator> navigator =
+              std::make_shared<MapNavigator>(movebase_action);
+  this->task_action = std::make_shared<nursebot::GuidanceTask>(navigator);
+
+  this->task_action->perform_task(task_msg);
 }

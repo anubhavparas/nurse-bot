@@ -39,13 +39,20 @@
 
 nursebot::TaskPublisher::TaskPublisher()
     : ros_node_h(std::make_shared<ros::NodeHandle>("~")) {
-    //  Initialize the publisher object
+  this->task_msg_pub = this->ros_node_h->advertise<nurse_bot::Task>(
+      this->task_topic, buffer_rate);
 }
 
 nursebot::TaskPublisher::~TaskPublisher() {
 }
 
 void nursebot::TaskPublisher::publish(const nurse_bot::Task& task_msg) {
-  //  publish the message
+  ROS_WARN_STREAM("TaskPublisher:: Publishing a message");
+  ros::Rate loop_rate(1);
   this->task_msg = task_msg;
+  while (ros::ok()) {
+    this->task_msg_pub.publish(task_msg);
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
 }

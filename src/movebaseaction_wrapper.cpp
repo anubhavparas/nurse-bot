@@ -41,13 +41,50 @@ nursebot::MoveBaseActionWrapper::MoveBaseActionWrapper(
                                 const std::string & name,
                                 bool spin_thread)
     : mb_actionclient(std::make_shared<MoveBaseClient>(name, spin_thread)) {
+  // wait for the action server to come up
+  while (!this->mb_actionclient->waitForServer(ros::Duration(5.0))) {
+    ROS_WARN_STREAM("Waiting for the move_base action server to come up");
+  }
 }
 
 nursebot::MoveBaseActionWrapper::~MoveBaseActionWrapper() {
 }
 
+void nursebot::MoveBaseActionWrapper::nursebot_goal_to_movebase_goal(
+                const nursebot::Pose& nursebot_goal,
+                move_base_msgs::MoveBaseGoal& move_base_goal) {
+  move_base_goal.target_pose.pose.position.x = nursebot_goal.x;
+  move_base_goal.target_pose.pose.position.y = nursebot_goal.y;
+  move_base_goal.target_pose.pose.position.z = nursebot_goal.z;
+
+  move_base_goal.target_pose.pose.orientation.x = nursebot_goal.qx;
+  move_base_goal.target_pose.pose.orientation.y = nursebot_goal.qy;
+  move_base_goal.target_pose.pose.orientation.z = nursebot_goal.qz;
+  move_base_goal.target_pose.pose.orientation.w = nursebot_goal.qw;
+}
+
 bool nursebot::MoveBaseActionWrapper::sendgoal(const std::string& frame_id,
                                                const nursebot::Pose& goal) {
-  return true;
+  move_base_msgs::MoveBaseGoal move_base_goal;
+  move_base_goal.target_pose.header.frame_id = frame_id;
+  move_base_goal.target_pose.header.stamp = ros::Time::now();
+
+  this->nursebot_goal_to_movebase_goal(goal, move_base_goal);
+
+  ROS_WARN_STREAM("Sending goal..");
+  this->mb_actionclient->sendGoal(move_base_goal);
+
+  this->mb_actionclient->waitForResult();
+
+  auto SUCCESS = actionlib::SimpleClientGoalState::SUCCEEDED;
+  if (mb_actionclient->getState() == SUCCESS) {
+    ROS_WARN_STREAM("MoveBaseActionWrapper::sendgoal():: "
+                    << "Robot has reached the specified goal");
+    return true;
+  } else {
+      ROS_ERROR_STREAM("MoveBaseActionWrapper::sendgoal():: "
+                     << "Base failed to move and reach the specified goal.");
+      return false;
+  }
 }
 

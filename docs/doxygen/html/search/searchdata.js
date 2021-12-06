@@ -1,7 +1,7 @@
 var indexSectionsWithContent =
 {
-  0: "mtu",
-  1: "mtu"
+  0: "amtu",
+  1: "amtu"
 };
 
 var indexSectionNames =
