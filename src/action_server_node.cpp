@@ -41,7 +41,8 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "action_server_node");
   ros::NodeHandle ros_node_h;
   std::string task_action_server_name;
-  if (ros_node_h.getParam("/task_action_server_name", task_action_server_name)) {
+  if (ros_node_h.getParam(
+          "/task_action_server_name", task_action_server_name)) {
     ROS_INFO_STREAM("task_action_server_name : " << task_action_server_name);
   } else {
     ROS_WARN_STREAM("Rosparam task_action_server_name not found!");

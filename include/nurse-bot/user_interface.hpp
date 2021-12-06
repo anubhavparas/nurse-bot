@@ -36,33 +36,49 @@
 #ifndef INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
 #define INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
 
-#include <ros/ros.h>
-#include <nurse_bot/Task.h>
-#include <nurse_bot/NBTaskAction.h>
 #include <geometry_msgs/Twist.h>
+#include <nurse_bot/NBTaskAction.h>
+#include <nurse_bot/Task.h>
+#include <ros/ros.h>
 
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <vector>
-
-#include <nurse-bot/task_publisher.hpp>
 #include <nurse-bot/task_action_client.hpp>
+#include <nurse-bot/task_publisher.hpp>
 
 namespace nursebot {
 
 class UserInterface {
  public:
-    explicit UserInterface(std::shared_ptr<nursebot::TaskActionClient> _task_ac);
-    ~UserInterface();
-    void get_user_input();
+  /**
+   * @brief Construct a new UserInterface object
+   * 
+   * @param _task_ac 
+   */
+  explicit UserInterface(
+      const std::shared_ptr<nursebot::TaskActionClient>& _task_ac);
+
+  /**
+   * @brief Destroy the UserInterface object
+   * 
+   */
+  virtual ~UserInterface();
+
+  /**
+   * @brief method to ask for user inputs for entity location and target location
+   * 
+   */
+  void get_user_input();
+
  private:
-    std::shared_ptr<nursebot::TaskActionClient> task_ac;
-    geometry_msgs::Twist entity_position;
-    geometry_msgs::Twist target_position;
-    nurse_bot::NBTaskGoal task_goal;
-    std::vector<float> input{0, 0, 0, 0};
-    int count = 1;
+  std::shared_ptr<nursebot::TaskActionClient> task_ac;
+  geometry_msgs::Twist entity_position;
+  geometry_msgs::Twist target_position;
+  nurse_bot::NBTaskGoal task_goal;
+  std::vector<float> input{0, 0, 0, 0};
+  int count = 1;
 };
 
 }  //  namespace nursebot

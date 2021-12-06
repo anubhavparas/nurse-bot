@@ -61,7 +61,8 @@ void nursebot::TaskActionServer::task_action_callback(
 
   ROS_WARN_STREAM("TaskActionServer:: Received request");
   std::shared_ptr<nursebot::MoveBaseActionWrapper> movebase_action =
-      std::make_shared<nursebot::MoveBaseActionWrapper>(this->move_base_server_name, true);
+      std::make_shared<nursebot::MoveBaseActionWrapper>(
+              this->move_base_server_name, true);
 
   std::shared_ptr<Navigator> navigator =
       std::make_shared<MapNavigator>(movebase_action);

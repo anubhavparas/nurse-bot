@@ -48,7 +48,7 @@
 
 
 nursebot::UserInterface::UserInterface(
-          std::shared_ptr<nursebot::TaskActionClient>_task_ac)
+          const std::shared_ptr<nursebot::TaskActionClient>& _task_ac)
       :
       task_ac(_task_ac) {}
 
