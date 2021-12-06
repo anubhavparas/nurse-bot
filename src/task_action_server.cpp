@@ -43,6 +43,7 @@ nursebot::TaskActionServer::TaskActionServer(const std::string& action_name) :
         ros_nh,
         action_name,
         boost::bind(&TaskActionServer::task_action_callback, this, _1), false) {
+  this->init_params();
   ROS_WARN_STREAM("TaskActionServer():: Starting server...");
   this->action_server.start();
   ROS_WARN_STREAM("TaskActionServer():: Server started...");
@@ -50,13 +51,17 @@ nursebot::TaskActionServer::TaskActionServer(const std::string& action_name) :
 
 nursebot::TaskActionServer::~TaskActionServer() {
 }
-
+void nursebot::TaskActionServer::init_params() {
+  ROS_WARN_STREAM("Initializing parametres");
+  this->ros_nh.getParam("/move_base_server_name", this->move_base_server_name);
+  ROS_WARN_STREAM("move_base_server_name : " << this->move_base_server_name);
+}
 void nursebot::TaskActionServer::task_action_callback(
     const nurse_bot::NBTaskGoalConstPtr& task_goal) {
 
   ROS_WARN_STREAM("TaskActionServer:: Received request");
   std::shared_ptr<nursebot::MoveBaseActionWrapper> movebase_action =
-      std::make_shared<nursebot::MoveBaseActionWrapper>("move_base", true);
+      std::make_shared<nursebot::MoveBaseActionWrapper>(this->move_base_server_name, true);
 
   std::shared_ptr<Navigator> navigator =
       std::make_shared<MapNavigator>(movebase_action);
