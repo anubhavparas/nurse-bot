@@ -6,7 +6,7 @@
   <arg name="is_record_bag" default="false" />
   <arg name="bagfile" default="recorded_topics.bag" />
   <arg name="task_action_server_name" default="nursebot_actionserver" />
-  <arg name="move_base_server_name" default="move_base" />
+  <arg name="move_base_server_name" default="/move_base" />
 
   
 

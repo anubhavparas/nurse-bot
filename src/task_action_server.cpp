@@ -54,7 +54,7 @@ nursebot::TaskActionServer::~TaskActionServer() {
 void nursebot::TaskActionServer::init_params() {
   ROS_WARN_STREAM("Initializing parametres");
   this->ros_nh.getParam("/move_base_server_name", this->move_base_server_name);
-  ROS_WARN_STREAM("move_base_server_name : "<< move_base_server_name);
+  ROS_WARN_STREAM("move_base_server_name : " << this->move_base_server_name);
 }
 void nursebot::TaskActionServer::task_action_callback(
     const nurse_bot::NBTaskGoalConstPtr& task_goal) {
