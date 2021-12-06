@@ -50,6 +50,16 @@ nursebot::TaskActionClient::TaskActionClient(
 nursebot::TaskActionClient::~TaskActionClient() {
 }
 
+void nursebot::TaskActionClient::waitForResult() {
+  this->action_client->waitForResult();
+}
+
+// SimpleClientGoalState nursebot::TaskActionClient::getState() {
+//   return this->action_client->getState();
+// }
+
+
+
 bool nursebot::TaskActionClient::request_action(
         const nurse_bot::NBTaskGoal& task_goal) {
   ROS_WARN_STREAM("TaskActionClient::request_action():: Sending request.. ");
