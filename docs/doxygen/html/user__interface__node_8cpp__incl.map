@@ -1,2 +1,13 @@
 <map id="src/user_interface_node.cpp" name="src/user_interface_node.cpp">
+<area shape="rect" id="node1" title="ROS node for to spawn user interface and have some interaction with the user over command line." alt="" coords="701,5,839,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,102,84,129"/>
+<area shape="rect" id="node3" title=" " alt="" coords="109,102,239,129"/>
+<area shape="rect" id="node4" title=" " alt="" coords="264,102,455,129"/>
+<area shape="rect" id="node5" title=" " alt="" coords="479,102,655,129"/>
+<area shape="rect" id="node6" title=" " alt="" coords="679,102,759,129"/>
+<area shape="rect" id="node7" title=" " alt="" coords="783,102,861,129"/>
+<area shape="rect" id="node8" title=" " alt="" coords="885,102,959,129"/>
+<area shape="rect" id="node9" title=" " alt="" coords="983,102,1194,129"/>
+<area shape="rect" id="node10" title=" " alt="" coords="1218,95,1381,136"/>
+<area shape="rect" id="node11" title=" " alt="" coords="1405,102,1615,129"/>
 </map>
