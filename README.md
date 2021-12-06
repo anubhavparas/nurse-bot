@@ -73,9 +73,13 @@ SOFTWARE.
 ## Design
 The following are the current designs for the Nursebot ROS package: 
 
-![alt text](./UML/initial/UML_Class_Diagram_NurseBot.png?raw=true "NurseBot Class Diagram")
+![alt text](./UML/revised/UML_Class_Diagram_NurseBot.png?raw=true "NurseBot Class Diagram")
 
-Activity flow diagrams can be found [here](./UML/initial/).
+Activity flow diagrams can be found [here](./UML/revised/).
+
+The following are the custom ros msg and ros action being used by publisher-subscriber and ros action client-server respectively:
+- [Task.msg](msg/Task.msg)
+- [NBTask.action](action/NBTask.action)
 
 ## Development process
 Agile Development Process will be used in the development process with Test-Driven Development.
@@ -186,6 +190,10 @@ doxygen doxygen.config
 
 The documents are generated in `./docs/doxygen` folder.
 
+## Development Status
+- The user can interact with the commandline user interface and give the task information to be performed.
+
+- The bot can plan its path and perform that task according to the request from the user.
 
 ## TODO
 
@@ -194,6 +202,15 @@ The documents are generated in `./docs/doxygen` folder.
 
 + Try resolving travis build issues due to negative credits or look for alternatives/workarounds.
 + Integrating and testing code coverage for remote builds once travis is working. 
+
+</details>
+
+<details>
+<summary><strong>Phase 2 Issues - Pending</strong></summary>
+
++ Figure out alternate for Travis CI builds.
++ Check the failing unit tests and modify the implementation accordingly.
++ Check why the TaskActionServer node dies after the first task. Check for any memory/pointer issues.
 
 </details>
 
