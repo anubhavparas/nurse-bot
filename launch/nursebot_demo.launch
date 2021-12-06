@@ -10,11 +10,11 @@
 
   
 
-  <!-- <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
+  <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
     <arg name="lost" value="$(arg lost)"/>
     <arg name="robot" value="$(arg robot)"/>
     <arg name="world" value="$(arg world)"/>
-  </include> -->
+  </include>
   
   <param name="task_action_server_name" value="$(arg task_action_server_name)"/>
   <param name="move_base_server_name" value="$(arg move_base_server_name)"/>
