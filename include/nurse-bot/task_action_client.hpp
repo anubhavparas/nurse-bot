@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file user_interface_node.cpp
+ * @file task_action_client.hpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief ROS node for to spawn user interface and publish messages
+ * @brief Defining the class to act as action client for the TaskActionServer
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,45 +33,53 @@
  * 
  */
 
-#include <ros/ros.h>
-#include <nurse_bot/Task.h>
+#ifndef INCLUDE_NURSE_BOT_TASK_ACTION_CLIENT_HPP_
+#define INCLUDE_NURSE_BOT_TASK_ACTION_CLIENT_HPP_
+
+#include <actionlib/client/simple_action_client.h>
 #include <nurse_bot/NBTaskAction.h>
-#include <geometry_msgs/Twist.h>
+#include <nurse_bot/Task.h>
+#include <ros/ros.h>
 
-#include <iostream>
 #include <memory>
-#include <sstream>
-
-#include <nurse-bot/task_publisher.hpp>
-#include <nurse-bot/task_action_client.hpp>
+#include <string>
+#include <nurse-bot/task_action.hpp>
 
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "user_interface_node");
+namespace nursebot {
 
-  ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
-  ros::WallDuration(60.0).sleep();
-  ROS_WARN_STREAM("Arm mgiht be tucked in");
+typedef actionlib::SimpleActionClient<nurse_bot::NBTaskAction> NBActionClient;
 
-  ros::NodeHandle ros_node_h;
-  std::unique_ptr<nursebot::TaskPublisher> task_pub(
-                        new nursebot::TaskPublisher());
+class TaskActionClient {
+ public:
+  /**
+   * @brief Construct a new Task Action Client object
+   * 
+   * @param action_server_name
+   */
+  explicit TaskActionClient(const std::string& action_server_name);
 
-  nurse_bot::Task task_msg;
-  task_msg.task_id = "G1";
-  // task_pub->publish(task_msg);
+  /**
+   * @brief Destroy the TaskActionClient object
+   * 
+   */
+  virtual ~TaskActionClient();
 
+  /**
+   * @brief method to send the action/task request to the action server
+   * 
+   * @param task_goal request payload
+   * @return true 
+   * @return false 
+   */
+  virtual bool request_action(const nurse_bot::NBTaskGoal& task_goal);
 
+ private:
+  std::shared_ptr<nursebot::NBActionClient> action_client;
+  void done_callback(const actionlib::SimpleClientGoalState& state,
+                     const nurse_bot::NBTaskResultConstPtr& result);
+};
 
-  std::unique_ptr<nursebot::TaskActionClient> task_ac(
-                new nursebot::TaskActionClient("nursebot_actionserver"));
+}  // namespace nursebot
 
-  nurse_bot::NBTaskGoal task_goal;
-  task_goal.task_id = "G1";
-  task_goal.task_type = "Guidance";
-
-  task_ac->request_action(task_goal);
-
-  ros::spin();
-  return 0;
-}
+#endif  // INCLUDE_NURSE_BOT_TASK_ACTION_CLIENT_HPP_

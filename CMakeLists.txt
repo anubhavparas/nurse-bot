@@ -68,11 +68,10 @@ add_message_files(
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  FILES
+  NBTask.action
+)
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
@@ -147,6 +146,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_ui_node 
               src/user_interface_node.cpp 
               src/task_publisher.cpp
+              src/task_action_client.cpp
               )
 target_link_libraries(${PROJECT_NAME}_ui_node ${catkin_LIBRARIES})
 add_dependencies(${PROJECT_NAME}_ui_node nurse_bot_generate_messages_cpp)
@@ -160,6 +160,16 @@ add_executable(${PROJECT_NAME}_task_sub_node
               )
 target_link_libraries(${PROJECT_NAME}_task_sub_node ${catkin_LIBRARIES})
 add_dependencies(${PROJECT_NAME}_task_sub_node nurse_bot_generate_messages_cpp)
+
+add_executable(${PROJECT_NAME}_action_server_node 
+              src/action_server_node.cpp 
+              src/task_action_server.cpp 
+              src/map_navigator.cpp
+              src/movebaseaction_wrapper.cpp
+              src/task_action.cpp
+              )
+target_link_libraries(${PROJECT_NAME}_action_server_node ${catkin_LIBRARIES})
+add_dependencies(${PROJECT_NAME}_action_server_node nurse_bot_generate_messages_cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file user_interface_node.cpp
+ * @file action_server_node.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief ROS node for to spawn user interface and publish messages
+ * @brief ROS node to spin the TaskActionServer up
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -34,43 +34,15 @@
  */
 
 #include <ros/ros.h>
-#include <nurse_bot/Task.h>
-#include <nurse_bot/NBTaskAction.h>
-#include <geometry_msgs/Twist.h>
 
-#include <iostream>
-#include <memory>
-#include <sstream>
+#include <nurse-bot/task_action_server.hpp>
 
-#include <nurse-bot/task_publisher.hpp>
-#include <nurse-bot/task_action_client.hpp>
-
-
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "user_interface_node");
-
-  ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
-  ros::WallDuration(60.0).sleep();
-  ROS_WARN_STREAM("Arm mgiht be tucked in");
-
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "action_server_node");
   ros::NodeHandle ros_node_h;
-  std::unique_ptr<nursebot::TaskPublisher> task_pub(
-                        new nursebot::TaskPublisher());
-
-  nurse_bot::Task task_msg;
-  task_msg.task_id = "G1";
-  // task_pub->publish(task_msg);
-
-
-
-  std::unique_ptr<nursebot::TaskActionClient> task_ac(
-                new nursebot::TaskActionClient("nursebot_actionserver"));
-
-  nurse_bot::NBTaskGoal task_goal;
-  task_goal.task_id = "G1";
-  task_goal.task_type = "Guidance";
-
-  task_ac->request_action(task_goal);
+  ROS_WARN_STREAM("Initializing TaskActionServer node... ");
+  std::unique_ptr<nursebot::TaskActionServer> action_server(
+      new nursebot::TaskActionServer("nursebot_actionserver"));
 
   ros::spin();
   return 0;
