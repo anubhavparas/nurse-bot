@@ -44,6 +44,7 @@
 
 #include <nurse-bot/task_publisher.hpp>
 #include <nurse-bot/task_action_client.hpp>
+#include <nurse-bot/user_interface.hpp>
 
 
 int main(int argc, char **argv) {
@@ -61,16 +62,13 @@ int main(int argc, char **argv) {
   task_msg.task_id = "G1";
   // task_pub->publish(task_msg);
 
-
-
-  std::unique_ptr<nursebot::TaskActionClient> task_ac(
+  std::shared_ptr<nursebot::TaskActionClient> task_ac(
                 new nursebot::TaskActionClient("nursebot_actionserver"));
 
-  nurse_bot::NBTaskGoal task_goal;
-  task_goal.task_id = "G1";
-  task_goal.task_type = "Guidance";
+  std::unique_ptr<nursebot::UserInterface> user_interface(
+                new nursebot::UserInterface(task_ac));
 
-  task_ac->request_action(task_goal);
+  user_interface->get_user_input();
 
   ros::spin();
   return 0;
