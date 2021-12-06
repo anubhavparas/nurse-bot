@@ -83,7 +83,9 @@ class TaskActionServer {
             const nurse_bot::NBTaskGoalConstPtr& task_goal);
 
  private:
+  std::string move_base_server_name;
   std::shared_ptr<nursebot::TaskAction> task_action;
+  virtual void init_params();
 };
 
 }  // namespace nursebot
