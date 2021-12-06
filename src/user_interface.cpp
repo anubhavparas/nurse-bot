@@ -47,29 +47,42 @@
 #include <nurse-bot/user_interface.hpp>
 
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "user_interface_node");
+nursebot::UserInterface::UserInterface(std::shared_ptr<nursebot::TaskActionClient>_task_ac)
+                                :task_ac(_task_ac) {}
 
-  ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
-  ros::WallDuration(60.0).sleep();
-  ROS_WARN_STREAM("Arm mgiht be tucked in");
+nursebot::UserInterface::~UserInterface() {
+}
 
-  ros::NodeHandle ros_node_h;
-  std::unique_ptr<nursebot::TaskPublisher> task_pub(
-                        new nursebot::TaskPublisher());
+void nursebot::UserInterface::get_user_input() {
+  nurse_bot::NBTaskGoal task_goal;
 
-  nurse_bot::Task task_msg;
-  task_msg.task_id = "G1";
-  // task_pub->publish(task_msg);
+  char continue_to_read = 'y';
+  do {
+    std::cout<< "Do you want Guidance or Delivery?" << std::endl;
+    std::cin >> task_goal.task_type;
 
-  std::shared_ptr<nursebot::TaskActionClient> task_ac(
-                new nursebot::TaskActionClient("nursebot_actionserver"));
+    std::cout << "Please provide the entity position - x,y" << std::endl;
+    std::cin >> input[0] >> input[1];
 
-  std::unique_ptr<nursebot::UserInterface> user_interface(
-                new nursebot::UserInterface(task_ac));
+    std::cout << "Please provide the target position - x,y" << std::endl;
+    std::cin >> input[2] >> input[3];
 
-  user_interface->get_user_input();
+    std::cout << "Sending goal to navigation server........." << std::endl;
 
-  ros::spin();
-  return 0;
+    task_goal.task_id = "G" + std::to_string(count);
+
+    entity_position.linear.x = 2;
+    entity_position.linear.y = 2;
+
+    entity_position.linear.x = -5;
+    entity_position.linear.y = -5;
+
+    task_goal.entity_position = this->entity_position;
+    task_goal.target_position = this->target_position;
+
+    task_ac->request_action(task_goal);
+
+    std::cout << "Do you want to continue? y/n" << std::endl;
+    std::cin >> continue_to_read;
+  } while (continue_to_read == 'y' || continue_to_read == 'Y');
 }
