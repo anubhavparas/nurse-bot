@@ -25,7 +25,7 @@
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief ROS node for to spawn user interface and publish messages
+ * @brief ROS node for to spawn user interface and have some interaction with the user over command line
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -47,8 +47,10 @@
 #include <nurse-bot/user_interface.hpp>
 
 
-nursebot::UserInterface::UserInterface(std::shared_ptr<nursebot::TaskActionClient>_task_ac)
-                                :task_ac(_task_ac) {}
+nursebot::UserInterface::UserInterface(
+          std::shared_ptr<nursebot::TaskActionClient>_task_ac)
+      :
+      task_ac(_task_ac) {}
 
 nursebot::UserInterface::~UserInterface() {
 }
@@ -61,15 +63,15 @@ void nursebot::UserInterface::get_user_input() {
     std::cout<< "Do you want Guidance or Delivery?" << std::endl;
     std::cin >> task_goal.task_type;
 
-    std::cout << "Please provide the entity position - x,y" << std::endl;
+    std::cout << "Please provide the entity position - x y" << std::endl;
     std::cin >> input[0] >> input[1];
 
-    std::cout << "Please provide the target position - x,y" << std::endl;
+    std::cout << "Please provide the target position - x y" << std::endl;
     std::cin >> input[2] >> input[3];
 
     std::cout << "Sending goal to navigation server........." << std::endl;
 
-    task_goal.task_id = "G" + std::to_string(count);
+    task_goal.task_id = "T" + std::to_string(count);
 
     entity_position.linear.x = 2;
     entity_position.linear.y = 2;
@@ -81,6 +83,7 @@ void nursebot::UserInterface::get_user_input() {
     task_goal.target_position = this->target_position;
 
     task_ac->request_action(task_goal);
+    task_ac->waitForResult();
 
     std::cout << "Do you want to continue? y/n" << std::endl;
     std::cin >> continue_to_read;
