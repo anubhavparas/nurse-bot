@@ -33,6 +33,9 @@
  * 
  */
 
+#ifndef INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
+#define INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
+
 #include <ros/ros.h>
 #include <nurse_bot/Task.h>
 #include <nurse_bot/NBTaskAction.h>
@@ -41,35 +44,27 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <vector>
 
 #include <nurse-bot/task_publisher.hpp>
 #include <nurse-bot/task_action_client.hpp>
-#include <nurse-bot/user_interface.hpp>
 
+namespace nursebot {
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "user_interface_node");
+class UserInterface {
+ public:
+    explicit UserInterface(std::shared_ptr<nursebot::TaskActionClient> _task_ac);
+    ~UserInterface();
+    void get_user_input();
+ private:
+    std::shared_ptr<nursebot::TaskActionClient> task_ac;
+    geometry_msgs::Twist entity_position;
+    geometry_msgs::Twist target_position;
+    nurse_bot::NBTaskGoal task_goal;
+    std::vector<float> input{0, 0, 0, 0};
+    int count = 1;
+};
 
-  ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
-  ros::WallDuration(60.0).sleep();
-  ROS_WARN_STREAM("Arm mgiht be tucked in");
+}  //  namespace nursebot
 
-  ros::NodeHandle ros_node_h;
-  std::unique_ptr<nursebot::TaskPublisher> task_pub(
-                        new nursebot::TaskPublisher());
-
-  nurse_bot::Task task_msg;
-  task_msg.task_id = "G1";
-  // task_pub->publish(task_msg);
-
-  std::shared_ptr<nursebot::TaskActionClient> task_ac(
-                new nursebot::TaskActionClient("nursebot_actionserver"));
-
-  std::unique_ptr<nursebot::UserInterface> user_interface(
-                new nursebot::UserInterface(task_ac));
-
-  user_interface->get_user_input();
-
-  ros::spin();
-  return 0;
-}
+#endif  //  INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
