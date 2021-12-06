@@ -1,3 +1,4 @@
+string task_id
 string task_type
 geometry_msgs/Twist entity_position
 geometry_msgs/Twist target_position

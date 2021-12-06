@@ -81,6 +81,16 @@ class MoveBaseActionWrapper {
 
  private:
   std::shared_ptr<MoveBaseClient> mb_actionclient;
+
+  /**
+   * @brief method to map nursebot goal object to movebase goal object
+   * 
+   * @param nursebot_goal 
+   * @param move_base_goal 
+   */
+  void nursebot_goal_to_movebase_goal(
+                const nursebot::Pose& nursebot_goal,
+                move_base_msgs::MoveBaseGoal& move_base_goal);  // NOLINT-CPP
 };
 }  // namespace nursebot
 
