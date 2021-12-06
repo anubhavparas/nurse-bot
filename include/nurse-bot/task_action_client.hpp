@@ -74,6 +74,19 @@ class TaskActionClient {
    */
   virtual bool request_action(const nurse_bot::NBTaskGoal& task_goal);
 
+  /**
+   * @brief method to wait for the action to complete
+   * 
+   */
+  virtual void waitForResult();
+
+  /**
+   * @brief Get the state of the action request
+   * 
+   * @return SimpleClientGoalState::StateEnum 
+   */
+//   virtual SimpleClientGoalState getState();
+
  private:
   std::shared_ptr<nursebot::NBActionClient> action_client;
   void done_callback(const actionlib::SimpleClientGoalState& state,
