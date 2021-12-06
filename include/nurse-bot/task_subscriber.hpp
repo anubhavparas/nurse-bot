@@ -41,6 +41,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <nurse-bot/task_action.hpp>
 
 namespace nursebot {
@@ -70,11 +71,14 @@ class TaskSubscriber {
 
  private:
   std::shared_ptr<ros::NodeHandle> ros_node_h;
+  std::shared_ptr<nursebot::TaskAction> task_action;
+
   ros::Subscriber task_msg_sub;
   int buffer_rate = 10;
   nurse_bot::TaskConstPtr task_msg_ptr;
   std::string task_topic = "/nursebot/task";
-  std::shared_ptr<nursebot::TaskAction> task_action;
+
+  std::unordered_set<std::string> task_ids;
 
 
   /**
