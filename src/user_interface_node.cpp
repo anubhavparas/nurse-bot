@@ -34,32 +34,43 @@
  */
 
 #include <ros/ros.h>
-#include<nurse_bot/Task.h>
+#include <nurse_bot/Task.h>
+#include <nurse_bot/NBTaskAction.h>
+#include <geometry_msgs/Twist.h>
 
 #include <iostream>
 #include <memory>
 #include <sstream>
 
 #include <nurse-bot/task_publisher.hpp>
+#include <nurse-bot/task_action_client.hpp>
 
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "user_interface_node");
+
+  ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
+  ros::WallDuration(60.0).sleep();
+  ROS_WARN_STREAM("Arm mgiht be tucked in");
+
   ros::NodeHandle ros_node_h;
   std::unique_ptr<nursebot::TaskPublisher> task_pub(
                         new nursebot::TaskPublisher());
 
   nurse_bot::Task task_msg;
-  task_pub->publish(task_msg);
+  task_msg.task_id = "G1";
+  // task_pub->publish(task_msg);
 
-//   std::shared_ptr<MoveBaseActionWrapper> movebase_action =
-//                       std::make_shared<MoveBaseActionWrapper>("map", true);
-//   std::shared_ptr<Navigator> navigator =
-//               std::make_shared<MapNavigator>(movebase_action);
-//   this->task_action = std::make_shared<nursebot::GuidanceTask>(navigator);
 
-//   this->task_action->perform_task(task_msg);
 
+  std::unique_ptr<nursebot::TaskActionClient> task_ac(
+                new nursebot::TaskActionClient("nursebot_actionserver"));
+
+  nurse_bot::NBTaskGoal task_goal;
+  task_goal.task_id = "G1";
+  task_goal.task_type = "Guidance";
+
+  task_ac->request_action(task_goal);
 
   ros::spin();
   return 0;
