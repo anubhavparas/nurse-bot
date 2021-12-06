@@ -1,0 +1,15 @@
+#goal definition
+string task_id
+string task_type
+geometry_msgs/Twist entity_position
+geometry_msgs/Twist target_position
+---
+#result definition
+string task_id
+int32 SUCCESS               = 1
+int32 ERROR                 = -1
+string status
+---
+#feedback
+string task_id
+string status
