@@ -20,8 +20,7 @@
    <group ns="nursebot">
     <node pkg="rosbag" type="record" name="rosbag_record" 
           args="record -O $(arg bagfile) -a"
-          if="$(arg is_record_bag)"
-    />
+          if="$(arg is_record_bag)"/>
   </group>
   
 </launch>
