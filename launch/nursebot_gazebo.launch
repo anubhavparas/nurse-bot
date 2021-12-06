@@ -1,16 +1,18 @@
 <launch>
-
+  <!-- roslaunch tiago_2dnav_gazebo tiago_navigation.launch public_sim:=true lost:=false robot:=steel world:=simple_office_with_people -->
   <arg name="robot" default="steel"/>
   <arg name="lost" default="false"/>
   <arg name="world" default="simple_office_with_people"/>
 
-  <group ns="nursebot">
+  <!-- <group ns="nursebot"> -->
     <include file="$(find tiago_2dnav_gazebo)/launch/tiago_navigation.launch">
       <arg name="public_sim" value="true"/>
       <arg name="lost" value="$(arg lost)"/>
       <arg name="robot" value="$(arg robot)"/>
       <arg name="world" value="$(arg world)"/>
     </include>
-  </group>
+
+    <!-- <node pkg="play_motion" name="nb_is_already_there" type="is_already_there"/> -->
+  <!-- </group> -->
   
 </launch>

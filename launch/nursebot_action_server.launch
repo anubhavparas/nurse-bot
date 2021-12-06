@@ -1,0 +1,7 @@
+<launch>
+
+  <!-- <group ns="nursebot"> -->
+    <node pkg="nurse_bot" name="nurse_bot_action_server_node" type="nurse_bot_action_server_node"/>
+  <!-- </group> -->
+  
+</launch>

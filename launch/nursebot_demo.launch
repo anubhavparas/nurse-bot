@@ -12,8 +12,9 @@
     <arg name="world" value="$(arg world)"/>
   </include>
 
-  <include file="$(find nurse_bot)/launch/nursebot_tasksubscriber.launch"/>
+  <!-- <include file="$(find nurse_bot)/launch/nursebot_tasksubscriber.launch"/> -->
   <include file="$(find nurse_bot)/launch/nursebot_ui_node.launch"/>
+  <include file="$(find nurse_bot)/launch/nursebot_action_server.launch"/>
 
    
    <group ns="nursebot">
