@@ -39,6 +39,7 @@
 #include <memory>
 
 #include <nurse-bot/mock/movebaseaction_wrapper_mock.hpp>
+#include <nurse-bot/movebaseaction_wrapper.hpp>
 #include <nurse-bot/pose.hpp>
 #include <nurse-bot/map_navigator.hpp>
 

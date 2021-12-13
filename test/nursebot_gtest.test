@@ -1,0 +1,3 @@
+<launch>
+  <test test-name="gunit_tests" pkg="nurse_bot" type="nursebot_gtest" />
+</launch>
