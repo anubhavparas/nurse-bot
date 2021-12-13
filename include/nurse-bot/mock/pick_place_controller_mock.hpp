@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file main.cpp
+ * @file pick_place_controller_mock.hpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief mock for PickPlaceController class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,24 +33,22 @@
  * 
  */
 
+#ifndef INCLUDE_NURSE_BOT_MOCK_PICK_PLACE_CONTROLLER_MOCK_HPP_
+#define INCLUDE_NURSE_BOT_MOCK_PICK_PLACE_CONTROLLER_MOCK_HPP_
 
-#include <ros/ros.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
+#include <string>
+#include <vector>
+#include <nurse-bot/pick_place_controller.hpp>
 
+namespace nursebot {
+class PickPlaceControllerMock : public nursebot::PickPlaceController {
+ public:
+  MOCK_METHOD0(pick_object, bool());
+  MOCK_METHOD0(release_object, bool());
+};
+}  // namespace nursebot
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
-  ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
-}
+#endif  // INCLUDE_NURSE_BOT_MOCK_PICK_PLACE_CONTROLLER_MOCK_HPP_

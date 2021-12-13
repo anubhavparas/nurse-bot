@@ -25,28 +25,8 @@
   <author email="stelang@umd.edu">Siddharth Telang</author>
   <author email="anubhavp@umd.edu">Anubhav Paras</author>
 
-
-  <!-- The *depend tags are used to specify dependencies -->
-  <!-- Dependencies can be catkin packages or system dependencies -->
-  <!-- Examples: -->
-  <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
-  <!--   <depend>roscpp</depend> -->
-  <!--   Note that this is equivalent to the following: -->
-  <!--   <build_depend>roscpp</build_depend> -->
-  <!--   <exec_depend>roscpp</exec_depend> -->
-  <!-- Use build_depend for packages you need at compile time: -->
-  <!--   <build_depend>message_generation</build_depend> -->
-  <!-- Use build_export_depend for packages you need in order to build against this package: -->
-  <!--   <build_export_depend>message_generation</build_export_depend> -->
-  <!-- Use buildtool_depend for build tool packages: -->
-  <!--   <buildtool_depend>catkin</buildtool_depend> -->
-  <!-- Use exec_depend for packages you need at runtime: -->
-  <!--   <exec_depend>message_runtime</exec_depend> -->
-  <!-- Use test_depend for packages you need only for testing: -->
-  <!--   <test_depend>gtest</test_depend> -->
-  <!-- Use doc_depend for packages you need only for building documentation: -->
-  <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  
   <build_depend>actionlib</build_depend>
   <build_depend>actionlib_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
@@ -58,6 +38,12 @@
   <build_depend>std_msgs</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>message_generation</build_depend>
+  <build_depend>moveit_ros_planning_interface</build_depend> 
+  <build_depend>control_msgs</build_depend>
+  <build_depend>fiducial_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  
   <build_export_depend>actionlib</build_export_depend>
   <build_export_depend>actionlib_msgs</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
@@ -68,6 +54,7 @@
   <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>tf</build_export_depend>
+  
   <exec_depend>actionlib</exec_depend>
   <exec_depend>actionlib_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
@@ -79,10 +66,22 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>tf</exec_depend>
   <exec_depend>message_runtime</exec_depend>
+  <exec_depend>moveit_ros_planning_interface</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>fiducial_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_geometry_msgs</exec_depend>
+  
   <test_depend>rosunit</test_depend>
   <test_depend>rostest</test_depend>
   <test_depend>google-mock</test_depend>
   <test_depend>gtest</test_depend>
+  <test_depend>moveit_ros_planning_interface</test_depend> 
+  <test_depend>control_msgs</test_depend>
+  <test_depend>fiducial_msgs</test_depend>
+  <test_depend>tf2_ros</test_depend>
+  <test_depend>tf2_geometry_msgs</test_depend>
+  <test_depend>code_coverage</test_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

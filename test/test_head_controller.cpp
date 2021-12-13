@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file main.cpp
+ * @file test_head_controller.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief Testing of HeadController class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,24 +33,47 @@
  * 
  */
 
-
-#include <ros/ros.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <ros/ros.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
+#include <string>
+#include <memory>
+#include <nurse-bot/head_controller.hpp>
 
+using ::testing::_;
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
-  ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
+TEST(HeadControllerTest, test_move_head) {
+  ros::NodeHandle n;
+  std::string head_ctrl_name;
+
+  ros::WallDuration(1.0).sleep();
+  ros::spinOnce();
+
+  n.getParam("/head_ctrl_name", head_ctrl_name);
+  ROS_WARN_STREAM("head_ctrl_name : " << head_ctrl_name);
+
+  nursebot::HeadController head_controller(head_ctrl_name);
+
+  bool status = head_controller.move_head(1.0, 0.0);
+  EXPECT_TRUE(status);
+}
+
+TEST(HeadControllerTest, test_set_to_default) {
+  ros::NodeHandle n;
+  std::string head_ctrl_name;
+
+  ros::WallDuration(1.0).sleep();
+  ros::spinOnce();
+
+  n.getParam("/head_ctrl_name", head_ctrl_name);
+  ROS_WARN_STREAM("head_ctrl_name : " << head_ctrl_name);
+
+  nursebot::HeadController head_controller(head_ctrl_name);
+
+  bool status = head_controller.set_to_default();
+  EXPECT_TRUE(status);
 }

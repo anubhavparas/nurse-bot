@@ -25,7 +25,7 @@
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief main for controller tests
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -37,20 +37,9 @@
 #include <ros/ros.h>
 #include <gtest/gtest.h>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
-
-
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
+  ros::init(argc, argv, "controller_test_node");
   ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
+  return RUN_ALL_TESTS();
 }
+

@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file main.cpp
+ * @file aruco_detector_mock.hpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief mock for ArucoDetector class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,24 +33,25 @@
  * 
  */
 
+#ifndef INCLUDE_NURSE_BOT_MOCK_ARUCO_DETECTOR_MOCK_HPP_
+#define INCLUDE_NURSE_BOT_MOCK_ARUCO_DETECTOR_MOCK_HPP_
 
-#include <ros/ros.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <string>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
+#include <nurse-bot/aruco_detector.hpp>
+#include <nurse-bot/pose.hpp>
 
+namespace nursebot {
+class ArucoDetectorMock : public nursebot::ArucoDetector {
+ public:
+  MOCK_METHOD0(get_object_pose, geometry_msgs::PoseStamped());
+  MOCK_METHOD0(get_pre_grasp_pose, geometry_msgs::PoseStamped());
+  MOCK_METHOD0(get_grasp_pose, geometry_msgs::PoseStamped());
+  MOCK_METHOD0(is_object_detected, bool());
+  MOCK_METHOD1(object_detected, void(geometry_msgs::PoseStamped));
+};
+}  // namespace nursebot
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
-  ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
-}
+#endif  // INCLUDE_NURSE_BOT_MOCK_ARUCO_DETECTOR_MOCK_HPP_

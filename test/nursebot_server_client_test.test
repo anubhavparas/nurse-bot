@@ -1,0 +1,16 @@
+<launch>
+  <arg name="task_action_server_name" default="nursebot_actionserver" />
+  <arg name="move_base_server_name" default="/move_base" />
+  
+  <param name="task_action_server_name" value="$(arg task_action_server_name)"/>
+  <param name="move_base_server_name" value="$(arg move_base_server_name)"/>
+
+  <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
+    <arg name="rviz" value="false"/>
+    <arg name="gzclient" value="false"/>
+  </include>
+
+  <test test-name="server_client_unit_tests" pkg="nurse_bot" type="server_client_test" />
+
+
+</launch>
