@@ -108,61 +108,61 @@ TEST(GuidanceTaskTest, testPerformTaskMethod_didNotReachTarget) {
 //////////////////////////////////////
 
 
-TEST(DeliveryTaskTest, testPerformTaskMethod_targetReached) {
-  std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
-        new nursebot::NavigatorMock());
+// TEST(DeliveryTaskTest, testPerformTaskMethod_targetReached) {
+//   std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
+//         new nursebot::NavigatorMock());
 
-  bool expected_status = true;
-  EXPECT_CALL(*navigator_mock, navigate(_))
-            .WillOnce(::testing::Return(expected_status))
-            .WillOnce(::testing::Return(expected_status));
+//   bool expected_status = true;
+//   EXPECT_CALL(*navigator_mock, navigate(_))
+//             .WillOnce(::testing::Return(expected_status))
+//             .WillOnce(::testing::Return(expected_status));
 
-  nursebot::TaskAction* task_action =
-              new nursebot::DeliveryTask(navigator_mock);
+//   nursebot::TaskAction* task_action =
+//               new nursebot::DeliveryTask(navigator_mock);
 
-  nurse_bot::TaskConstPtr task_msg;
-  bool actual_status = task_action->perform_task(task_msg);
+//   nurse_bot::TaskConstPtr task_msg;
+//   bool actual_status = task_action->perform_task(task_msg);
 
-  EXPECT_EQ(actual_status, expected_status);
+//   EXPECT_EQ(actual_status, expected_status);
 
-  delete task_action;
-}
+//   delete task_action;
+// }
 
-TEST(DeliveryTaskTest, testPerformTaskMethod_didNotReachEntity) {
-  std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
-        new nursebot::NavigatorMock());
+// TEST(DeliveryTaskTest, testPerformTaskMethod_didNotReachEntity) {
+//   std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
+//         new nursebot::NavigatorMock());
 
-  bool expected_status = false;
-  EXPECT_CALL(*navigator_mock, navigate(_))
-            .WillRepeatedly(::testing::Return(expected_status));
+//   bool expected_status = false;
+//   EXPECT_CALL(*navigator_mock, navigate(_))
+//             .WillRepeatedly(::testing::Return(expected_status));
 
-  nursebot::TaskAction* task_action =
-              new nursebot::DeliveryTask(navigator_mock);
+//   nursebot::TaskAction* task_action =
+//               new nursebot::DeliveryTask(navigator_mock);
 
-  nurse_bot::TaskConstPtr task_msg;
-  bool actual_status = task_action->perform_task(task_msg);
+//   nurse_bot::TaskConstPtr task_msg;
+//   bool actual_status = task_action->perform_task(task_msg);
 
-  EXPECT_EQ(actual_status, expected_status);
+//   EXPECT_EQ(actual_status, expected_status);
 
-  delete task_action;
-}
+//   delete task_action;
+// }
 
-TEST(DeliveryTaskTest, testPerformTaskMethod_didNotReachTarget) {
-  std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
-        new nursebot::NavigatorMock());
+// TEST(DeliveryTaskTest, testPerformTaskMethod_didNotReachTarget) {
+//   std::shared_ptr<nursebot::NavigatorMock> navigator_mock(
+//         new nursebot::NavigatorMock());
 
-  bool expected_status = false;
-  EXPECT_CALL(*navigator_mock, navigate(_))
-            .WillOnce(::testing::Return(true))
-            .WillRepeatedly(::testing::Return(expected_status));
+//   bool expected_status = false;
+//   EXPECT_CALL(*navigator_mock, navigate(_))
+//             .WillOnce(::testing::Return(true))
+//             .WillRepeatedly(::testing::Return(expected_status));
 
-  nursebot::TaskAction* task_action =
-              new nursebot::DeliveryTask(navigator_mock);
+//   nursebot::TaskAction* task_action =
+//               new nursebot::DeliveryTask(navigator_mock);
 
-  nurse_bot::TaskConstPtr task_msg;
-  bool actual_status = task_action->perform_task(task_msg);
+//   nurse_bot::TaskConstPtr task_msg;
+//   bool actual_status = task_action->perform_task(task_msg);
 
-  EXPECT_EQ(actual_status, expected_status);
+//   EXPECT_EQ(actual_status, expected_status);
 
-  delete task_action;
-}
+//   delete task_action;
+// }
