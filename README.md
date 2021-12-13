@@ -165,7 +165,27 @@ source devel/setup.bash
     ```
     roslaunch nurse_bot nursebot_demo.launch
     ```
+### Rosbag:
+- To enable rosbag recording. By default it is disabled. 
+    - This will store the rosbag recording in a file `home/<username>/.ros/recorded_topics.bag`
+        ```
+        roslaunch nurse_bot nursebot_demo.launch is_record_bag:=true
+        ```
 
+### Running the tests
+- Build the test:
+    ```
+    cd ~/nursebot_ws/
+    catkin_make
+    catkin_make run_tests (to run all the test executables)
+    (or)
+    catkin_make run_tests nursebot_gtest (to run specific executable)
+    ```
+- tests can be run using `rostest` too, once `$catkin_make run_tests` have been run once. 
+    ```
+    source devel/setup.bash
+    rostest nurse_bot nursebot_gtest.test
+    ```
 
 ## Run cppcheck and cpplint
 Run cppcheck: Results are stored in `./results/cppcheck_process.txt`, `./results/cppcheck_result.txt` 
@@ -192,8 +212,8 @@ doxygen doxygen.config
 The documents are generated in `./docs/doxygen` folder.
 
 ## Demonstration Links:
-- [Guidance Task](https://drive.google.com/file/d/1CGQbpyhaPZTeK-d0pB91bbgMX4FYDdBl/view?usp=sharing)
-- [Delivery Task](https://drive.google.com/file/d/1VDm_0hDbJfX6hvylEEAmeKotNpRVPt_Y/view?usp=sharing)
+- [Guidance Task](https://drive.google.com/file/d/1KXg1YCIkf8f1LYsRyMdXWANSphi5n7kf/view?usp=sharing)
+- [Delivery Task](https://drive.google.com/file/d/1Zz7KHegs3K-Q1lZsVuD25LJ9Ajzc5aUt/view?usp=sharing)
 
 
 ## Presentation
