@@ -1,3 +1,39 @@
 <launch>
+    <arg name="robot"  default="steel"/>
+    <arg name="arm"  default="$(eval {'iron': False}.get(arg('robot'), True))"/>
+    <arg name="end_effector"  default="custom"/>
+    <arg name="ft_sensor"  default="$(eval {'titanium': 'schunk-ft'}.get(arg('robot'), 'false'))"/>
+    <arg name="laser_model"  default="sick-571"/>
+    <arg name="camera_model"  default="orbbec-astra"/>
+    <arg name="multi" default=""/>
+    <arg name="base_type" default="pmb2"/>
+
+    <arg name="gzpose" default="-x 0 -y 0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+    <arg name="model_name" default="tiago"/>
+    <arg name="public_sim"   default="true"/>
+    <arg name="local_planner"  default="$(eval 'teb' if (arg('public_sim') or arg('base_type')=='omni_base') else 'pal')"/>
+
+    <!-- Spawn robot in Gazebo
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_model"
+        args="-urdf -param robot_description $(arg gzpose) -model $(arg model_name)" /> -->
+
+    <!-- <include file="$(find tiago_gazebo)/launch/tiago_gazebo.launch">
+    </include> -->
+    <!-- <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
+    </include> -->
+    <!-- Robot model -->
+  <include file="$(find tiago_description)/robots/upload.launch">
+    <arg name="arm" value="$(arg arm)"/>
+    <arg name="end_effector" value="custom"/>
+    <arg name="ft_sensor" value="$(arg ft_sensor)"/>
+    <arg name="laser_model" value="$(arg laser_model)"/>
+    <arg name="camera_model" value="$(arg camera_model)"/>
+    <arg name="multi"  value="$(arg multi)"/>
+    <arg name="base_type"  value="$(arg base_type)"/>
+  </include>
+
+  <param name="robot_description_semantic" textfile="$(find moveit_custom_config)/config/srdf/tiago_custom.srdf" />
+    
+    
     <test test-name="unit_tests" pkg="nurse_bot" type="nursebot_test" />
 </launch>

@@ -1,0 +1,15 @@
+<launch>
+    <arg name="rviz"     default="false"/>
+    <arg name="gzclient" default="false"/>
+    
+    
+    <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
+      <arg name="rviz" value="$(arg rviz)"/>
+      <arg name="gzclient" value="$(arg gzclient)"/>
+    </include>
+    
+    <!-- <include file="$(find nurse_bot)/launch/nursebot_aruco_detect.launch">
+    </include> -->
+    
+    <test test-name="aruco_unit_tests" pkg="nurse_bot" type="aruco_test" />
+</launch>
