@@ -139,6 +139,7 @@ sudo apt-get install -y -qq lcov
     ```
 - Build the workspace:
     ```
+    sudo apt-get install ros-melodic-fiducials
     source /opt/ros/melodic/setup.bash
     catkin_make -DCATKIN_ENABLE_TESTING=0
     ```
@@ -190,30 +191,8 @@ doxygen doxygen.config
 
 The documents are generated in `./docs/doxygen` folder.
 
-## Presentation link
-[Link](https://docs.google.com/presentation/d/1cla1x4mnNUFcSlie9drLzIUO8PGBb18yNXufHVvToSA/edit?usp=sharing)
+## Demonstration Links:
+- [Guidance Task](https://drive.google.com/file/d/1CGQbpyhaPZTeK-d0pB91bbgMX4FYDdBl/view?usp=sharing)
+- [Delivery Task](https://drive.google.com/file/d/1VDm_0hDbJfX6hvylEEAmeKotNpRVPt_Y/view?usp=sharing)
 
-## Development Status
-- The user can interact with the commandline user interface and give the task information to be performed.
-
-- The bot can plan its path and perform that task according to the request from the user.
-
-## TODO
-
-<details>
-<summary><strong>Phase 1 Issues - Pending</strong></summary>
-
-+ Try resolving travis build issues due to negative credits or look for alternatives/workarounds.
-+ Integrating and testing code coverage for remote builds once travis is working. 
-
-</details>
-
-<details>
-<summary><strong>Phase 2 Issues - Pending</strong></summary>
-
-+ Figure out alternate for Travis CI builds.
-+ Check the failing unit tests and modify the implementation accordingly.
-+ Check why the TaskActionServer node dies after the first task. Check for any memory/pointer issues.
-
-</details>
 
