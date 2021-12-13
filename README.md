@@ -190,6 +190,9 @@ doxygen doxygen.config
 
 The documents are generated in `./docs/doxygen` folder.
 
+## Presentation link
+[Link](https://docs.google.com/presentation/d/1cla1x4mnNUFcSlie9drLzIUO8PGBb18yNXufHVvToSA/edit?usp=sharing)
+
 ## Development Status
 - The user can interact with the commandline user interface and give the task information to be performed.
 
