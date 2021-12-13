@@ -117,6 +117,7 @@ Refer the [sheet](https://docs.google.com/document/d/1zCVvXDaD1QKs-hEOy-ZBZ3aXe3
 #### Code Coverage
 ```
 sudo apt-get install -y -qq lcov
+pip install --user cpp-coveralls
 ```
 #### Installing TIAGo package:
 - Create a workspace:
@@ -165,6 +166,10 @@ source devel/setup.bash
     ```
     roslaunch nurse_bot nursebot_demo.launch
     ```
+- In another terminal run (this is for tag detection):
+    ```
+    roslaunch nurse_bot nursebot_aruco_detect.launch
+    ```
 ### Rosbag:
 - To enable rosbag recording. By default it is disabled. 
     - This will store the rosbag recording in a file `home/<username>/.ros/recorded_topics.bag`
@@ -173,19 +178,46 @@ source devel/setup.bash
         ```
 
 ### Running the tests
+- All the current 17 tests (gtest=8, rostest=9) for this projects are passing.
+- GMock library has been used to create mock of dependent classes.
+- Mocks can be found at [mock](include/nurse-bot/mock) folder.
+- Mocks were created for the following classes:
+    - [ArmController](include/nurse-bot/mock/arm_controller_mock.hpp)
+    - [HeadController](include/nurse-bot/mock/head_controller_mock.hpp)
+    - [TorsoController](include/nurse-bot/mock/torso_controller_mock.hpp)
+    - [GripperController](include/nurse-bot/mock/gripper_controller_mock.hpp)
+    - [MapNavigator](include/nurse-bot/mock/navigator_mock.hpp)
+
+
 - Build the test:
     ```
     cd ~/nursebot_ws/
     catkin_make
     catkin_make run_tests (to run all the test executables)
+    
     (or)
+    
     catkin_make run_tests nursebot_gtest (to run specific executable)
+    
+    (or)
+    
+    cd ~/nursebot_ws/build
+    make tests
+    cd ~/nursebot_ws/
+    rostest nurse_bot nursebot_gtest.test
+    rostest nurse_bot nursebot_aruco_test.test
+    rostest nurse_bot nursebot_controllers_test.test
+    rostest nurse_bot nursebot_server_client_test.test
     ```
 - tests can be run using `rostest` too, once `$catkin_make run_tests` have been run once. 
     ```
     source devel/setup.bash
     rostest nurse_bot nursebot_gtest.test
+    rostest nurse_bot nursebot_aruco_test.test
+    rostest nurse_bot nursebot_controllers_test.test
+    rostest nurse_bot nursebot_server_client_test.test
     ```
+
 
 ## Run cppcheck and cpplint
 Run cppcheck: Results are stored in `./results/cppcheck_process.txt`, `./results/cppcheck_result.txt` 
