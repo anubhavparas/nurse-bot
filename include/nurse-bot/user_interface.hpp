@@ -37,6 +37,7 @@
 #define INCLUDE_NURSE_BOT_USER_INTERFACE_HPP_
 
 #include <geometry_msgs/Twist.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <nurse_bot/NBTaskAction.h>
 #include <nurse_bot/Task.h>
 #include <ros/ros.h>
@@ -74,8 +75,8 @@ class UserInterface {
 
  private:
   std::shared_ptr<nursebot::TaskActionClient> task_ac;
-  geometry_msgs::Twist entity_position;
-  geometry_msgs::Twist target_position;
+  geometry_msgs::PoseStamped entity_position;
+  geometry_msgs::PoseStamped target_position;
   nurse_bot::NBTaskGoal task_goal;
   std::vector<float> input{0, 0, 0, 0};
   int count = 1;
