@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
   ROS_WARN_STREAM("Waiting for the arm to be tucked in....");
   ros::WallDuration(60.0).sleep();
-  ROS_WARN_STREAM("Arm mgiht be tucked in");
+  ROS_WARN_STREAM("Arm might be tucked in");
 
   ros::NodeHandle ros_node_h;
   std::unique_ptr<nursebot::TaskPublisher> task_pub(

@@ -37,19 +37,87 @@
 
 #include <nurse-bot/task_action_server.hpp>
 
+#include <nurse-bot/movebaseaction_wrapper.hpp>
+#include <nurse-bot/map_navigator.hpp>
+#include <nurse-bot/pick_place_controller.hpp>
+#include <nurse-bot/aruco_detector.hpp>
+#include <nurse-bot/robot_controller.hpp>
+
+
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "action_server_node");
   ros::NodeHandle ros_node_h;
+
   std::string task_action_server_name;
-  if (ros_node_h.getParam(
-          "/task_action_server_name", task_action_server_name)) {
-    ROS_INFO_STREAM("task_action_server_name : " << task_action_server_name);
-  } else {
-    ROS_WARN_STREAM("Rosparam task_action_server_name not found!");
-  }
+  std::string move_base_server_name;
+  std::string head_ctrl_name;
+  std::string torso_ctrl_name;
+  std::string gripper_ctrl_name;
+
+  ros_node_h.getParam("/task_action_server_name", task_action_server_name);
+  ROS_WARN_STREAM("task_action_server_name : " << task_action_server_name);
+
+  ros_node_h.getParam("/move_base_server_name", move_base_server_name);
+  ROS_WARN_STREAM("move_base_server_name : " << move_base_server_name);
+
+  ros_node_h.getParam("/head_ctrl_name", head_ctrl_name);
+  ROS_WARN_STREAM("head_ctrl_name : " << head_ctrl_name);
+
+  ros_node_h.getParam("/torso_ctrl_name", torso_ctrl_name);
+  ROS_WARN_STREAM("torso_ctrl_name : " << torso_ctrl_name);
+
+  ros_node_h.getParam("/gripper_ctrl_name", gripper_ctrl_name);
+  ROS_WARN_STREAM("gripper_ctrl_name : " << gripper_ctrl_name);
+
+
   ROS_WARN_STREAM("Initializing TaskActionServer node... ");
+
+  std::shared_ptr<nursebot::MoveBaseActionWrapper> movebase_action =
+      std::make_shared<nursebot::MoveBaseActionWrapper>(
+              move_base_server_name, true);
+
+  std::shared_ptr<nursebot::Navigator> navigator =
+      std::make_shared<nursebot::MapNavigator>(movebase_action);
+
+  nursebot::HeadControllerPtr headController =
+      std::make_shared<nursebot::HeadController>(head_ctrl_name);
+
+  nursebot::TorsoControllerPtr torsoController =
+      std::make_shared<nursebot::TorsoController>(torso_ctrl_name);
+
+  nursebot::ArmControllerPtr armController =
+      std::make_shared<nursebot::ArmController>();
+
+  nursebot::GripperControllerPtr gripperController =
+      std::make_shared<nursebot::GripperController>(gripper_ctrl_name);
+
+  std::shared_ptr<nursebot::RobotController> robotController =
+      std::make_shared<nursebot::RobotController>(headController,
+                                                  torsoController,
+                                                  armController,
+                                                  gripperController);
+
+  std::shared_ptr<nursebot::ArucoDetector> arucoDetector =
+      std::make_shared<nursebot::ArucoDetector>();
+
+  std::shared_ptr<nursebot::PickPlaceController> pick_place_ctrl =
+      std::make_shared<nursebot::PickPlaceController>(
+                                                  arucoDetector,
+                                                  robotController);
+
+
+  std::shared_ptr<nursebot::TaskAction> guidance_task_action;
+  std::shared_ptr<nursebot::TaskAction> delivery_task_action;
+  guidance_task_action = std::make_shared<nursebot::GuidanceTask>(navigator);
+  delivery_task_action = std::make_shared<nursebot::DeliveryTask>(
+                                                            navigator,
+                                                            pick_place_ctrl);
+
   std::unique_ptr<nursebot::TaskActionServer> action_server(
-      new nursebot::TaskActionServer(task_action_server_name));
+      new nursebot::TaskActionServer(task_action_server_name,
+                                     guidance_task_action,
+                                     delivery_task_action));
 
   ros::spin();
   return 0;

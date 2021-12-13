@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file main.cpp
+ * @file test_torso_controller.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief Testing of TorsoController class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,24 +33,48 @@
  * 
  */
 
-
-#include <ros/ros.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <ros/ros.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
+#include <string>
+#include <memory>
+#include <nurse-bot/torso_controller.hpp>
+
+using ::testing::_;
+
+TEST(TorsoControllerTest, test_move_torso) {
+  ros::NodeHandle n;
+  std::string torso_ctrl_name;
+
+  ros::WallDuration(10.0).sleep();
+  ros::spinOnce();
+
+  n.getParam("/torso_ctrl_name", torso_ctrl_name);
+  ROS_WARN_STREAM("torso_ctrl_name : " << torso_ctrl_name);
+
+  nursebot::TorsoController torso_controller(torso_ctrl_name);
+
+  bool status = torso_controller.move_torso(0.2);
+  EXPECT_TRUE(status);
+}
 
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
-  ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
+TEST(TorsoControllerTest, test_set_to_default) {
+  ros::NodeHandle n;
+  std::string torso_ctrl_name;
+
+  ros::WallDuration(10.0).sleep();
+  ros::spinOnce();
+
+  n.getParam("/torso_ctrl_name", torso_ctrl_name);
+  ROS_WARN_STREAM("torso_ctrl_name : " << torso_ctrl_name);
+
+  nursebot::TorsoController torso_controller(torso_ctrl_name);
+
+  bool status = torso_controller.set_to_default();
+  EXPECT_TRUE(status);
 }

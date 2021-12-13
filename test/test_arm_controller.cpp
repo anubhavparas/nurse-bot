@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  * 
- * @file main.cpp
+ * @file test_arm_controller.cpp
  * @author Sakshi Kakde (sakshi@umd.edu) 
  * @author Siddharth Telang (stelang@umd.edu)
  * @author Anubhav Paras (anubhavp@umd.edu)
- * @brief Definitions of MapNavigator class
+ * @brief Testing of ArmController class
  * @version 0.1
  * @date 2021-11-27
  * 
@@ -33,24 +33,35 @@
  * 
  */
 
-
-#include <ros/ros.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <atomic>
-#include <thread>  // NOLINT-CPP
-#include <chrono>  // NOLINT-CPP
+#include <memory>
+#include <nurse-bot/arm_controller.hpp>
 
+using ::testing::_;
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "test_node");
-  ::testing::InitGoogleTest(&argc, argv);
-  std::thread t([] { while (ros::ok()) {
-                  ros::spin();
-                }
-              });
-  auto res = RUN_ALL_TESTS();
-  ros::shutdown();
-  t.get_id();
-  return res;
+TEST(ArmControllerTest, test_move_arm_ik) {
+  // geometry_msgs::PoseStamped goal_pose;
+  // goal_pose.pose.position.x = 0.363;
+  // goal_pose.pose.position.y = -0.197;
+  // goal_pose.pose.position.z = 1.0;
+  // goal_pose.pose.orientation.x = 0.707;
+  // goal_pose.pose.orientation.y = 0;
+  // goal_pose.pose.orientation.z = 0;
+  // goal_pose.pose.orientation.w = 0.707;
+
+  // bool expected_status = true;
+
+  // nursebot::ArmController arm_controller;
+
+  // bool actual_status = arm_controller.move_arm_ik(goal_pose);
+
+  // EXPECT_EQ(expected_status, actual_status);
+}
+
+TEST(ArmControllerTest, test_move_arm_fk) {
+}
+
+TEST(ArmControllerTest, test_tuck_arm) {
 }

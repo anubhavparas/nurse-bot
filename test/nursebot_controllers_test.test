@@ -1,0 +1,24 @@
+<launch>
+  <arg name="task_action_server_name" default="nursebot_actionserver" />
+  <arg name="move_base_server_name" default="/move_base" />
+  <arg name="head_ctrl_name" default="/head_controller/follow_joint_trajectory" />
+  <arg name="torso_ctrl_name" default="/torso_controller/follow_joint_trajectory" />
+  <arg name="gripper_ctrl_name" default="/gripper_controller/follow_joint_trajectory" />
+
+  <param name="task_action_server_name" value="$(arg task_action_server_name)"/>
+  <param name="move_base_server_name" value="$(arg move_base_server_name)"/>
+  <param name="head_ctrl_name" value="$(arg head_ctrl_name)"/>
+  <param name="torso_ctrl_name" value="$(arg torso_ctrl_name)"/>
+  <param name="gripper_ctrl_name" value="$(arg gripper_ctrl_name)"/>
+
+  <!-- <include file="$(find nurse_bot)/test/nursebot_aruco_test.test"/> -->
+
+  <include file="$(find nurse_bot)/launch/nursebot_gazebo.launch">
+    <arg name="rviz" value="false"/>
+    <arg name="gzclient" value="false"/>
+  </include>
+
+  <test test-name="controller_unit_tests" pkg="nurse_bot" type="controller_test" />
+
+
+</launch>

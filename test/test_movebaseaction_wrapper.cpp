@@ -39,14 +39,14 @@
 #include <memory>
 #include <string>
 
-#include <nurse-bot/mock/movebaseaction_wrapper_mock.hpp>
 #include <nurse-bot/pose.hpp>
 #include <nurse-bot/movebaseaction_wrapper.hpp>
 
-TEST(MoveBaseActionWrapperTest, testSendgoal) {
+TEST(MoveBaseActionWrapperTest, test_send_goal) {
     std::string frame_id = "map";
     std::string move_base_server = "move_base";
     nursebot::Pose goal_pose(0, 0, 0, 0, 0, 1);
+
     nursebot::MoveBaseActionWrapper mb_action(move_base_server, true);
     bool expected_status = true;
 

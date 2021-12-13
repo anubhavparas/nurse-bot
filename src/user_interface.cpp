@@ -73,17 +73,19 @@ void nursebot::UserInterface::get_user_input() {
 
     task_goal.task_id = "T" + std::to_string(count);
 
-    entity_position.linear.x = 2;
-    entity_position.linear.y = 2;
+    entity_position.pose.position.x = input[0];
+    entity_position.pose.position.y = input[1];
 
-    entity_position.linear.x = -5;
-    entity_position.linear.y = -5;
+    target_position.pose.position.x = input[2];
+    target_position.pose.position.y = input[3];
 
     task_goal.entity_position = this->entity_position;
     task_goal.target_position = this->target_position;
 
     task_ac->request_action(task_goal);
+    ROS_WARN_STREAM("UserInterface:: Waiting for the task to be completed..");
     task_ac->waitForResult();
+    ROS_WARN_STREAM("UserInterface:: Task done..");
 
     std::cout << "Do you want to continue? y/n" << std::endl;
     std::cin >> continue_to_read;
