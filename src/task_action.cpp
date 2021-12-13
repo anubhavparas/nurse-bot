@@ -49,24 +49,30 @@ nursebot::GuidanceTask::~GuidanceTask() {
 
 bool nursebot::GuidanceTask::perform_task(
     const nurse_bot::Task::ConstPtr& task_msg) {
-  geometry_msgs::Twist entity_position = task_msg->entity_position;
-  geometry_msgs::Twist target_position = task_msg->target_position;
+  geometry_msgs::PoseStamped entity_position = task_msg->entity_position;
+  geometry_msgs::PoseStamped target_position = task_msg->target_position;
 
-  Pose entity_loc_pose(-3, 3, 0, 0, 0, 0, 1);  // hard coded
+  Pose entity_loc_pose(entity_position.pose.position.x,
+                      entity_position.pose.position.y,
+                      0,
+                      0, 0, 0, 1);
   ROS_WARN_STREAM("GuidanceTask::perform_task():: "
-                  << "Sending the bot to the person.");
+                  << "Sending the bot to the object.");
   bool status = this->navigator->navigate(entity_loc_pose);
 
   if (!status) {
     ROS_ERROR_STREAM("GuidanceTask::perform_task():: "
-                      << "Task to move towards the person failed!");
+                      << "Task to move towards the object failed!");
     return false;
   }
 
   ROS_WARN_STREAM("GuidanceTask::perform_task():: "
                   << "Bot reached at the requested location.");
 
-  Pose target_loc_pose(-1, 8, 0, 0, 0, 0, 1);  // hard coded
+  Pose target_loc_pose(target_position.pose.position.x,
+                       target_position.pose.position.y,
+                       0,
+                       0, 0, 0, 1);
   ROS_WARN_STREAM("GuidanceTask::perform_task():: "
                   << "Started guiding the person towards the target position");
   status = this->navigator->navigate(target_loc_pose);
@@ -84,19 +90,28 @@ bool nursebot::GuidanceTask::perform_task(
 //////////////////////////////////////
 
 nursebot::DeliveryTask::DeliveryTask(
-    const std::shared_ptr<nursebot::Navigator>& navigator)
-    : navigator(navigator) {
+    const std::shared_ptr<nursebot::Navigator>& navigator,
+    const std::shared_ptr<nursebot::PickPlaceController>& pick_place_ctlr)
+    : navigator(navigator),
+      pick_place_ctlr(pick_place_ctlr) {
 }
+
 
 nursebot::DeliveryTask::~DeliveryTask() {
 }
 
+
+
 bool nursebot::DeliveryTask::perform_task(
     const nurse_bot::Task::ConstPtr& task_msg) {
-  geometry_msgs::Twist entity_position = task_msg->entity_position;
-  geometry_msgs::Twist target_position = task_msg->target_position;
+  geometry_msgs::PoseStamped entity_position = task_msg->entity_position;
+  geometry_msgs::PoseStamped target_position = task_msg->target_position;
 
-  Pose entity_loc_pose(-1, 8, 0, 0, 0, 0, 1);  // hard coded
+  // Pose entity_loc_pose(1.3, -2.7, 0, 0, 0, 0, 1);  // hard coded
+  Pose entity_loc_pose(entity_position.pose.position.x,
+                       entity_position.pose.position.y,
+                       0,
+                       0, 0, 1, 0);
   ROS_WARN_STREAM("DeliveryTask::perform_task():: "
                   << "Sending the bot to the person.");
   bool status = this->navigator->navigate(entity_loc_pose);
@@ -110,11 +125,30 @@ bool nursebot::DeliveryTask::perform_task(
   ROS_WARN_STREAM("DeliveryTask::perform_task():: "
                   << "Bot reached at the requested location.");
 
-  Pose target_loc_pose(-3, 3, 0, 0, 0, 0, 1);  // hard coded
-  ROS_WARN_STREAM("DeliveryTask::perform_task():: "
-                  << "Started deliveribg the object to the target position");
-  status = this->navigator->navigate(target_loc_pose);
+  // picking the object
+  status = this->pick_place_ctlr->pick_object();
+  if (!status) {
+    ROS_ERROR_STREAM("DeliveryTask::perform_task():: "
+                      << "Task to pick the object failed!");
+    return false;
+  }
 
+  // Pose target_loc_pose(-1, 8, 0, 0, 0, 0, 1);  // hard coded
+  Pose target_loc_pose(target_position.pose.position.x,
+                       target_position.pose.position.y,
+                       0,
+                       0, 0, 0, 1);
+  ROS_WARN_STREAM("DeliveryTask::perform_task():: "
+                  << "Started delivering the object to the target position");
+  status = this->navigator->navigate(target_loc_pose);
+  if (!status) {
+    ROS_ERROR_STREAM("DeliveryTask::perform_task():: "
+                      << "Task to reach the target location failed!");
+    return false;
+  }
+
+  // release the object
+  status = this->pick_place_ctlr->release_object();
   if (!status) {
     ROS_ERROR_STREAM("DeliveryTask::perform_task():: "
                       << "Task to deliver the object failed!");
