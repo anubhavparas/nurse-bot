@@ -196,3 +196,8 @@ The documents are generated in `./docs/doxygen` folder.
 - [Delivery Task](https://drive.google.com/file/d/1VDm_0hDbJfX6hvylEEAmeKotNpRVPt_Y/view?usp=sharing)
 
 
+## Presentation
+- [Video](https://drive.google.com/file/d/16NC7g0qo2npWoVmM8W78iiNOrEdmkWB1/view?usp=sharing)
+- [PPT](https://docs.google.com/presentation/d/1cla1x4mnNUFcSlie9drLzIUO8PGBb18yNXufHVvToSA/edit?usp=sharing)
+
+
