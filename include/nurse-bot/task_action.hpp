@@ -37,9 +37,11 @@
 #define INCLUDE_NURSE_BOT_TASK_ACTION_HPP_
 
 #include <nurse_bot/Task.h>
+#include <geometry_msgs/PoseStamped.h>
 
 #include <memory>
 #include <nurse-bot/map_navigator.hpp>
+#include <nurse-bot/pick_place_controller.hpp>
 
 namespace nursebot {
 
@@ -90,8 +92,10 @@ class DeliveryTask : public nursebot::TaskAction {
    * @brief Construct a new DeliveryTask object
    * 
    * @param navigator object responsible for robot motion
+   * @param pick_place_ctlr object responsible for picking and placing obejcts
    */
-  explicit DeliveryTask(const std::shared_ptr<nursebot::Navigator>& navigator);
+  DeliveryTask(const std::shared_ptr<nursebot::Navigator>& navigator,
+      const std::shared_ptr<nursebot::PickPlaceController>& pick_place_ctlr);
 
   /**
    * @brief Destroy the DeliveryTask object
@@ -113,6 +117,13 @@ class DeliveryTask : public nursebot::TaskAction {
    * 
    */
   std::shared_ptr<nursebot::Navigator> navigator;
+
+  /**
+   * @brief pointer the pick_place controller oject
+   * Responsible for the picking and placing the objects
+   * 
+   */
+  std::shared_ptr<nursebot::PickPlaceController> pick_place_ctlr;
 };
 
 }  // namespace nursebot
