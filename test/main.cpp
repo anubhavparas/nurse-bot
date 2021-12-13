@@ -37,8 +37,20 @@
 #include <ros/ros.h>
 #include <gtest/gtest.h>
 
+#include <atomic>
+#include <thread>  // NOLINT-CPP
+#include <chrono>  // NOLINT-CPP
+
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "test_node");
   ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  std::thread t([] { while (ros::ok()) {
+                  ros::spin();
+                }
+              });
+  auto res = RUN_ALL_TESTS();
+  ros::shutdown();
+  t.get_id();
+  return res;
 }
