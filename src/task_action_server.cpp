@@ -37,37 +37,32 @@
 #include <nurse-bot/map_navigator.hpp>
 #include <nurse-bot/movebaseaction_wrapper.hpp>
 
-nursebot::TaskActionServer::TaskActionServer(const std::string& action_name) :
+nursebot::TaskActionServer::TaskActionServer(
+          const std::string& action_name,
+          const std::shared_ptr<nursebot::TaskAction>& guidance_task_action,
+          const std::shared_ptr<nursebot::TaskAction>& delivery_task_action) :
       action_name(action_name),
+      guidance_task_action(guidance_task_action),
+      delivery_task_action(delivery_task_action),
       action_server(
         ros_nh,
         action_name,
-        boost::bind(&TaskActionServer::task_action_callback, this, _1), false) {
-  this->init_params();
+        boost::bind(&TaskActionServer::task_action_callback, this, _1),
+        false) {
   ROS_WARN_STREAM("TaskActionServer():: Starting server...");
   this->action_server.start();
   ROS_WARN_STREAM("TaskActionServer():: Server started...");
 }
 
 nursebot::TaskActionServer::~TaskActionServer() {
+  ROS_WARN_STREAM("TaskActionServer():: Destroying TaskActionServer");
 }
-void nursebot::TaskActionServer::init_params() {
-  ROS_WARN_STREAM("Initializing parametres");
-  this->ros_nh.getParam("/move_base_server_name", this->move_base_server_name);
-  ROS_WARN_STREAM("move_base_server_name : " << this->move_base_server_name);
-}
+
+
 void nursebot::TaskActionServer::task_action_callback(
     const nurse_bot::NBTaskGoalConstPtr& task_goal) {
 
   ROS_WARN_STREAM("TaskActionServer:: Received request");
-  std::shared_ptr<nursebot::MoveBaseActionWrapper> movebase_action =
-      std::make_shared<nursebot::MoveBaseActionWrapper>(
-              this->move_base_server_name, true);
-
-  std::shared_ptr<Navigator> navigator =
-      std::make_shared<MapNavigator>(movebase_action);
-
-  this->task_action = std::make_shared<nursebot::GuidanceTask>(navigator);
 
   nurse_bot::Task task_msg;
   task_msg.task_id = task_goal->task_id;
@@ -77,8 +72,15 @@ void nursebot::TaskActionServer::task_action_callback(
 
   nurse_bot::TaskConstPtr msg_ptr(&task_msg);
   ROS_WARN_STREAM("TaskActionServer:: Sending the task_msg to perform_task.");
-  bool task_status = this->task_action->perform_task(msg_ptr);
+  bool task_status = true;
 
+  if (task_msg.task_type == "Guidance" || task_msg.task_type == "G") {
+    task_status = this->guidance_task_action->perform_task(msg_ptr);
+  }
+
+  if (task_msg.task_type == "Delivery" || task_msg.task_type == "D") {
+    task_status = this->delivery_task_action->perform_task(msg_ptr);
+  }
 
   if (task_status) {
     ROS_WARN_STREAM("TaskActionServer:: Task completed successfully"
@@ -88,4 +90,6 @@ void nursebot::TaskActionServer::task_action_callback(
     this->task_result.status = "SUCCESS";
     this->action_server.setSucceeded(this->task_result);
   }
+  ROS_WARN_STREAM("TaskActionServer:: Exiting Callback method");
 }
+

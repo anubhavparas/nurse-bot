@@ -85,12 +85,12 @@ class TaskActionClient {
    * 
    * @return SimpleClientGoalState::StateEnum 
    */
-//   virtual SimpleClientGoalState getState();
+  virtual actionlib::SimpleClientGoalState getState();
 
  private:
   std::shared_ptr<nursebot::NBActionClient> action_client;
-  void done_callback(const actionlib::SimpleClientGoalState& state,
-                     const nurse_bot::NBTaskResultConstPtr& result);
+  //   void done_callback(const actionlib::SimpleClientGoalState& state,
+  //                      const nurse_bot::NBTaskResultConstPtr& result);
 };
 
 }  // namespace nursebot

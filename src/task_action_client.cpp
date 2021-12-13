@@ -54,28 +54,25 @@ void nursebot::TaskActionClient::waitForResult() {
   this->action_client->waitForResult();
 }
 
-// SimpleClientGoalState nursebot::TaskActionClient::getState() {
-//   return this->action_client->getState();
-// }
+actionlib::SimpleClientGoalState nursebot::TaskActionClient::getState() {
+  return this->action_client->getState();
+}
 
 
 
 bool nursebot::TaskActionClient::request_action(
         const nurse_bot::NBTaskGoal& task_goal) {
   ROS_WARN_STREAM("TaskActionClient::request_action():: Sending request.. ");
-  this->action_client->sendGoal(task_goal,
-                                boost::bind(
-                                  &TaskActionClient::done_callback,
-                                  this, _1, _2));
+  this->action_client->sendGoal(task_goal);
 }
 
-void nursebot::TaskActionClient::done_callback(
-                     const actionlib::SimpleClientGoalState& state,
-                     const nurse_bot::NBTaskResultConstPtr& result) {
-  ROS_WARN_STREAM("TaskActionClient::done_callback():: Task finished "
-                  << state.toString().c_str());
+// void nursebot::TaskActionClient::done_callback(
+//                      const actionlib::SimpleClientGoalState& state,
+//                      const nurse_bot::NBTaskResultConstPtr& result) {
+//   // ROS_WARN_STREAM("TaskActionClient::done_callback():: Task finished "
+//   //                 << state.toString().c_str());
 
-  ROS_WARN_STREAM("TaskActionClient::done_callback():: "
-                  << result->status);
-}
+//   // ROS_WARN_STREAM("TaskActionClient::done_callback():: "
+//   //                 << result->status);
+// }
 

@@ -65,8 +65,13 @@ class TaskActionServer {
    * @brief Construct a new TaskActionServer object
    * 
    * @param action_name name of the server
+   * @param guidance_task_action pointer to the object to perform guidance tasks
+   * @param delivery_task_action pointer to the object to perform delivery tasks
    */
-  explicit TaskActionServer(const std::string& action_name);
+  TaskActionServer(
+        const std::string& action_name,
+        const std::shared_ptr<nursebot::TaskAction>& guidance_task_action,
+        const std::shared_ptr<nursebot::TaskAction>& delivery_task_action);
 
   /**
    * @brief Destroy the TaskActionServer object
@@ -84,8 +89,8 @@ class TaskActionServer {
 
  private:
   std::string move_base_server_name;
-  std::shared_ptr<nursebot::TaskAction> task_action;
-  virtual void init_params();
+  std::shared_ptr<nursebot::TaskAction> guidance_task_action;
+  std::shared_ptr<nursebot::TaskAction> delivery_task_action;
 };
 
 }  // namespace nursebot

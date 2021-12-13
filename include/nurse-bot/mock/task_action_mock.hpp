@@ -53,3 +53,4 @@ class TaskActionMock : public nursebot::TaskAction {
 }  // namespace nursebot
 
 #endif  // INCLUDE_NURSE_BOT_MOCK_TASK_ACTION_MOCK_HPP_
+
