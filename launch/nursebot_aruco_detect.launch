@@ -1,0 +1,11 @@
+<launch>
+
+  <include file="$(find aruco_detect)/launch/aruco_detect.launch">
+    <arg name="camera" value="/xtion/rgb" />
+    <arg name="dictionary" value="16" />
+    <arg name="fiducial_len" value=".045" />
+    <arg name="image" value="image_raw" />
+    <arg name="ignore_fiducials" value="0-581,583-1023" />
+  </include>
+  
+</launch>
