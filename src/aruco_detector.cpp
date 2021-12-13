@@ -49,8 +49,6 @@ nursebot::ArucoDetector::~ArucoDetector() {
 
 void nursebot::ArucoDetector::detect_callback(
     const fiducial_msgs::FiducialTransformArray::ConstPtr& msg) {
-  ROS_WARN_STREAM("ArucoDetector()::detect_callback()::"
-                  << "detection information recieved.");
   if (!this->detected && msg->transforms.size() > 0) {
     this->fd_tf = msg->transforms[0];
     this->detected = true;
