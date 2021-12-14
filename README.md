@@ -24,7 +24,7 @@ With this thought, we propose to ACME robotics our assistant robot, NurseBot, th
 - Service-triggered delivery :  Carrying  medicines,  sup-plies, test samples, PPE kits, etc. from a pickup location to target location within the hospital.
 
 
-![alt text](./docs/images/TIAGoBot.png?raw=true&style=centerme "NurseBot TIAGo")
+![alt text](./docs/images/guidance_task.gif?raw=true "Unit Test Results")
 
 
 ## Licence
@@ -217,6 +217,9 @@ source devel/setup.bash
     rostest nurse_bot nursebot_controllers_test.test
     rostest nurse_bot nursebot_server_client_test.test
     ```
+- Test Results:
+
+    ![alt text](./docs/images/test_results.png?raw=true "Unit Test Results")
 
 
 ## Run cppcheck and cpplint
@@ -244,8 +247,8 @@ doxygen doxygen.config
 The documents are generated in `./docs/doxygen` folder.
 
 ## Demonstration Links:
-- [Guidance Task](https://drive.google.com/file/d/1KXg1YCIkf8f1LYsRyMdXWANSphi5n7kf/view?usp=sharing)
-- [Delivery Task](https://drive.google.com/file/d/1Zz7KHegs3K-Q1lZsVuD25LJ9Ajzc5aUt/view?usp=sharing)
+- [Guidance Task](https://drive.google.com/file/d/1ficBBS_-h1L1Eevz8LN-8MEm1eLRlX3_/view?usp=sharing)
+- [Delivery Task](https://drive.google.com/file/d/1uDjmzGUsFPw9t_KXMdRRSfYPQgjjtV-u/view?usp=sharing)
 
 
 ## Presentation
